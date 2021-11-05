@@ -1,0 +1,191 @@
+body{
+  height: 850px;
+  display:grid;
+  grid-template-columns: 20% 20% 20% 20% 20%;
+  grid-template-rows: 20% 70% 10%;
+  grid-template-areas:
+  "h h h h h"
+  "m m m m m"
+  "f f f f f"
+  ;
+}
+
+img{
+  float:left;
+  height: 40px;
+}
+
+header{
+  grid-area: h;
+  padding:10px;
+  border: 1px solid black;
+}
+
+#option{
+  width: 50%;
+  height: 100px;
+  border: 1px solid green;
+  padding: 10px;
+}
+
+
+main{
+  grid-area: m;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+#divMenu{
+  background-color: rgb(220, 235, 234);
+}
+
+.divTR{
+  display: flex;
+  height: 30px;
+  justify-content:unset;
+  transition: height linear 10ms;
+}
+  .divTR:hover {
+    background-color: yellow;
+  }
+
+.divTD{
+  text-align: center;
+}
+
+.open{
+  height: 150px;
+}
+  .open:hover{
+    background-color: white;
+  }
+
+.divTR :nth-child(1){
+  width: 50px;
+}
+.divTR :nth-child(2){
+  width: 230px;
+}
+.divTR :nth-child(3){
+  width: 90px;
+}
+.divTR :nth-child(4){
+  width: 90px;
+}
+.divTR :nth-child(5){
+  width: 90px;
+}
+.divTR :nth-child(6){
+  width: 90px;
+}
+.divTR :nth-child(7){
+  width: 90px;
+}
+.divTR :nth-child(8){
+  width: 90px;
+}
+.divTR :nth-child(9){
+  width: 90px;
+}
+.divTR :nth-child(10){
+  width: 90px;
+}
+
+#two{
+  width:1200px;
+  height: 700px;
+  margin-left: 20px;
+  margin-right: 0;
+  border: 1px solid black;
+  overflow-y: scroll;
+  display: inline-block;
+  float: left;
+}
+
+#map{
+  float:left;
+  width: 200px;
+  height: 200px;
+}
+
+#ktable{
+  width: 900px;
+  margin: 0;
+  float: left;
+}
+
+#dropdownMenuButton1{
+  width: 110px;
+  float: left;
+}
+
+tr{
+  border-top: 1px solid rgb(209, 207, 207);
+  border-bottom: 1px solid rgb(209, 207, 207);
+}
+
+th {
+  background-color: turquoise;
+  text-align: center;
+}
+
+tr:hover{
+  background-color: yellow;
+}
+
+td {
+  height: 20px;
+  border: none;
+  text-align: center;
+}
+
+footer{
+  border: 1px solid black;
+  grid-area: f;
+}
+
+.switch input {display:none;}
+
+/* The slider */
+.slider {
+  display: inline-block;
+  position: relative;
+  width: 30px;
+  height: 17px;
+  vertical-align:middle;
+  cursor: pointer;
+  background-color: rgb(39, 190, 85);
+  transition: .4s;
+}
+
+.slider:before { /*버튼 내부 하얀 원*/
+  position: absolute;
+  content: "";
+  height: 15px;
+  width: 15px;
+  left: 1px;
+  top: 1px;
+  background-color: rgb(247, 242, 242);
+  transition: .4s;
+}
+
+input:checked + .slider { /*클릭했을때 배경색 변경*/
+  background-color: #a5a8aa;
+}
+
+input:checked + .slider:before { /*클릭했을 때 공이 움직이게함 */
+  transform: translateX(13px);
+}
+
+/* Rounded sliders */
+.slider.round { /*버튼 틀의 모서리를 둥그렇게 만들어줌*/
+  border-radius: 34px;
+}
+.slider.round:before { /*버튼 내부 하얀 공을 동그랗게 만들어줌*/
+  border-radius: 50%;
+}
+
+#search{
+  display: block;
+  margin-left: 830px;
+}
