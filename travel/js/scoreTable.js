@@ -141,8 +141,8 @@ const paintTable = (order, distance, city, weatherScore, temp, cloud, wind, humi
   $(`<div class='divTR'>
   <div class='divTD'>${order}</div>
   <div class='divTD'>${city}</div>
-  <div class='divTD'><b>${weatherScore}</b></div>
-  <div class='divTD'><b>${distance}km</b></div>
+  <div class='divTD'>${weatherScore}</div>
+  <div class='divTD'>${distance}</div>
   <div class='divTD'>${temp}</div>
   <div class='divTD'>${cloud}</div>
   <div class='divTD'>${wind}</div>
@@ -175,12 +175,12 @@ const drawRows = async (areaArray) => {
   for(let i = 0; i < 10; i++){
     const lat = result[i].location.lat;
     const lon = result[i].location.lon;
-    const distance = Math.round(await kimin(lat, lon)/1000);
+    const distance = Math.round(await kimin(lat, lon)/1000)+"km";
     const cityName = result[i].city+"";
     const city = shortNameArray[cityName];
     const weatherScore = result[i].weatherScore;
     const temp = result[i].temp+"℃";
-    const cloud = Math.round(result[i].cloud);
+    const cloud = Math.round(result[i].cloud)+"%";
     const wind = result[i].wind+"m/s";
     const humid = result[i].humid+"%";
     if(result[i].rain !== 0){
@@ -190,9 +190,8 @@ const drawRows = async (areaArray) => {
       const snow = result[i].snow+"mm";
     } const snow = "-";
     const air = result[i].air;
-    let order = 1;
+    let order = i+1;
     paintTable(order, distance, city, weatherScore, temp, cloud, wind, humid, rain, snow, air);
-    order++;
   }
 }
 
@@ -239,13 +238,13 @@ class Scores {
     if(snow){
       this.snowScore = (100 - snow * 10) * .15;
     } else this.snowScore = 15;
-    if(rain){
+    if(rain)   {
       this.rainScore = (100 - rain)*.15;
     } else this.rainScore = 15;
     this.airScore = (100 - air)*.15;
   }
 
-  getTotal(){
+  getTotal() {
     const totalScore =this.tempScore + this.humidScore + this.windScore + this.cloudScore + this.snowScore + this.rainScore + this.airScore;
     return totalScore;
   }
@@ -258,3 +257,62 @@ const calculator = (weatherArr) => {
 }
 
 drawRows(bigCities);
+
+const sortAgain = (e) => {
+  //const value = e.currentTarget.text; // undefined
+  const value = e.currentTarget.textContent; //클릭된 메뉴 텍스트 인식
+  //현재 렌더된 도시별 데이터를 매핑
+  const contents = [];
+  for(i of $("#content").children()) {
+    const content ={};
+    const cell = i.children;
+    content.order = cell[0].textContent;
+    content.cityName = cell[1].textContent+"";
+    content.weatherScore = cell[2].textContent;
+    content.distance = cell[3].textContent;
+    content.temp = cell[4].textContent;
+    content.cloud = cell[5].textContent;
+    content.wind = cell[6].textContent;
+    content.humid = cell[7].textContent;
+    content.rain = cell[8].textContent;
+    content.snow = cell[9].textContent;
+    content.air = cell[10].textContent;
+    contents.push(content)
+  };
+  console.log(contents);
+  let standard;
+  switch(value) {
+    case '순위': standard = "order"; break;
+    case '도시': standard = "cityName"; break;
+    case '날씨점수': standard = "weatherScore"; break;
+    case '거리점수': standard = "distance"; break;
+    case '온도': standard = "temp"; break;
+    case '구름': standard = "cloud"; break;
+    case '바람': standard = "wind"; break;
+    case '습도': standard = "humid"; break;
+    case '강수': standard = "rain"; break;
+    case '강설': standard = "snow"; break;
+    case '공기': standard = "air"; break;
+  }
+  if(/\d/.test(contents[0][standard])) {
+    contents.sort((a,b) =>{
+      return b[standard].match(/[\d.]+/)[0]*1 - a[standard].match(/[\d.]+/)[0]*1;
+    })
+  } else contents.sort((a,b) => {
+      if(b[standard] > a[standard]) {
+        return -1
+      } else return 1;
+  })
+  console.log(contents);
+  $("#content").html("");
+  for(let i = 0; i < contents.length; i++){
+    paintTable(contents[i].order, contents[i].distance, contents[i].cityName, contents[i].weatherScore, contents[i].temp, contents[i].cloud, contents[i].wind, contents[i].humid, contents[i].rain, contents[i].snow, contents[i].air);
+  }
+  //한번 더 누르면 내림차순으로 바꿔주는 스윗치 기능(setAttribute를 붙이자.)
+  $(e.currentTarget.children[0]).removeClass("diamond");
+  $(e.currentTarget.children[0]).addClass("diamondAscending");
+}
+
+
+$("#divMenu .divTD").click(sortAgain);
+
