@@ -259,7 +259,6 @@ const calculator = (weatherArr) => {
 drawRows(bigCities);
 
 const sortAgain = (e) => {
-  //const value = e.currentTarget.text; // undefined
   const value = e.currentTarget.textContent; //클릭된 메뉴 텍스트 인식
   //현재 렌더된 도시별 데이터를 매핑
   const contents = [];
@@ -279,7 +278,6 @@ const sortAgain = (e) => {
     content.air = cell[10].textContent;
     contents.push(content)
   };
-  console.log(contents);
   let standard;
   switch(value) {
     case '순위': standard = "order"; break;
@@ -294,23 +292,39 @@ const sortAgain = (e) => {
     case '강설': standard = "snow"; break;
     case '공기': standard = "air"; break;
   }
-  if(/\d/.test(contents[0][standard])) {
-    contents.sort((a,b) =>{
-      return b[standard].match(/[\d.]+/)[0]*1 - a[standard].match(/[\d.]+/)[0]*1;
-    })
-  } else contents.sort((a,b) => {
-      if(b[standard] > a[standard]) {
-        return -1
-      } else return 1;
-  })
-  console.log(contents);
-  $("#content").html("");
-  for(let i = 0; i < contents.length; i++){
-    paintTable(contents[i].order, contents[i].distance, contents[i].cityName, contents[i].weatherScore, contents[i].temp, contents[i].cloud, contents[i].wind, contents[i].humid, contents[i].rain, contents[i].snow, contents[i].air);
+  for(let i = 0; i < 11; i++) {
+    $($(".divDia")[i]).removeClass("diamondAscending diamondDescending");
+    $($(".divDia")[i]).addClass("diamond");
   }
-  //한번 더 누르면 내림차순으로 바꿔주는 스윗치 기능(setAttribute를 붙이자.)
-  $(e.currentTarget.children[0]).removeClass("diamond");
-  $(e.currentTarget.children[0]).addClass("diamondAscending");
+  if($(e.currentTarget).data("status") !== "Descending") {
+    if(/\d/.test(contents[0][standard])) {
+      contents.sort((a,b) =>{
+        return b[standard].match(/[\d.]+/)[0]*1 - a[standard].match(/[\d.]+/)[0]*1;
+      })
+    } else contents.sort((a,b) => {
+        if(b[standard] > a[standard]) {
+          return -1
+        } else return 1;
+    })
+    $(e.currentTarget.children[0]).addClass("diamondDescending");
+    $(e.currentTarget).data("status", "Descending");
+  } else {
+    if(/\d/.test(contents[0][standard])) {
+      contents.sort((a,b) =>{
+        return a[standard].match(/[\d.]+/)[0]*1 - b[standard].match(/[\d.]+/)[0]*1;
+      })
+    } else contents.sort((a,b) => {
+        if(a[standard] > b[standard]) {
+          return -1
+        } else return 1;
+    })
+    $(e.currentTarget.children[0]).addClass("diamondAscending");
+    $(e.currentTarget).data("status", "Ascending");
+  }
+  $("#content").html("");
+    for(let i = 0; i < contents.length; i++){
+      paintTable(contents[i].order, contents[i].distance, contents[i].cityName, contents[i].weatherScore, contents[i].temp, contents[i].cloud, contents[i].wind, contents[i].humid, contents[i].rain, contents[i].snow, contents[i].air);
+    }
 }
 
 
