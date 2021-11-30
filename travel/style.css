@@ -11,7 +11,6 @@ body{
   ". f f ."
   ;
   background-color: rgb(20 203 250);
-  overflow-x: none;
 }
 
 a{
@@ -93,20 +92,24 @@ main{
   margin: 0;
   border-radius: 10px;
   float: left;
-  overflow-y: auto;
-  overflow-x: hidden;
+  overflow: auto;
 }
 
-#ktable::-webkit-scrollbar {
-  width: 15px;
+
+.unhover::-webkit-scrollbar {
+  width: 15px
 }
 
-#ktable::-webkit-scrollbar-track {
-  width: 20px;
-  background-color: rgba(255, 0, 0, 0);
+.hoverTable::-webkit-scrollbar {
+  width: 15px !important;
 }
 
-#ktable::-webkit-scrollbar-thumb {
+.hoverTable::-webkit-scrollbar-track {
+  width: 20px !important;
+  background-color: rgba(255, 0, 0, 0)!important;
+}
+
+.hoverTable::-webkit-scrollbar-thumb {
   width: 20px;
   background-color: rgb(31, 125, 202);
 }
@@ -308,7 +311,7 @@ input:checked + .slider:before { /*클릭했을 때 공이 움직이게함 */
 
 .cityinMap{
   fill:rgb(220, 235, 234);
-  transition: all, 2s;
+  transition: all, 0.5s;
 }
 
 .cityinMap:hover{
@@ -316,8 +319,6 @@ input:checked + .slider:before { /*클릭했을 때 공이 움직이게함 */
   stroke: #000000;
   stroke-width: 4;
 }
-
-
 
 .OUTLINE {
   stroke-linejoin:round;
@@ -327,7 +328,6 @@ input:checked + .slider:before { /*클릭했을 때 공이 움직이게함 */
 
 .selected{
   background-color: yellow !important;
-  fill: yellow !important;
   stroke: #000000;
   stroke-width: 4;
 }

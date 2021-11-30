@@ -178,27 +178,6 @@ $("#ktable").mouseleave((e)=>{
   $("#ktable").removeClass("hoverTable");
 })
 
-// const apiCall = (city) => {
-//   return new Promise((resolve, reject) => {
-//     const res = $.ajax({
-//       url: "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&units=metric&APPID=419670dccf136242228a0ffe5dc4c65d",
-//       type: "GET",
-//       success: async function(data){
-//         const result = {"city":city, "temp": data.main.temp, "humid": data.main.humidity, "wind":data.wind.speed, "cloud": data.clouds.all,  "snow":data.snow, "location":{"lon":data.coord.lon, "lat":data.coord.lat}};
-//         result.air = await apiCall_air();
-//         if(data.rain){
-//           result.rain = data.rain['1'];
-//         } else result.rain = 0;
-//         if(data.snow){
-//           result.snow = data.snow;
-//         } else result.snow = 0;
-//         resolve(result);
-//       }
-//   });
-//   })
-// };
-
-
 const apiCall_air = async (lat, lon) => {
   const kk = await apiCall2(lat,lon);
   const airIDX = kk.list[0].main.aqi
@@ -237,6 +216,12 @@ const paintTable = (order, distance, city, weatherScore, temp, cloud, wind, humi
   <div class='divTD'>${snow}</div>
   <div class='divTD'>${air}</div>
   </div>`).appendTo($("#content"));
+  const siblingArray = divTR.parent().children();
+  for(let i = 0; i<siblingArray.length; i++){
+    if(!!siblingArray[i+1] && $($(siblingArray[i]).children()[2]).text() < $($(siblingArray[i+1]).children()[2]).text()){
+      console.log(`${i+1}번째와 ${i+2}번째 : 순서변경필요`)
+    }
+  }
   divTR.mouseenter((e)=>{
     showArrow(e);
     connectTable2Map(e);
@@ -248,50 +233,39 @@ const paintTable = (order, distance, city, weatherScore, temp, cloud, wind, humi
   const arrowDiv = $(`<div class='divTD'></div>`).appendTo(divTR);
   const arrowBtn = $(`<button class='hidden'>👉</button>`).appendTo(arrowDiv)
   arrowBtn.click((e)=> {
-    console.log(1)
     arrowClickHandle(e);
     e.stopPropagation();
   })
 }
 
-// const drawRows = async (areaArray) => {
-//   const callTask = areaArray.map(async (area) => {
-//     const result = await apiCall(area.name);
-//     return result;
-//   })
-//   const result = await Promise.all(callTask);
-//   result.forEach((a) => {
-//     const myArr = [a.temp, Math.round(a.humid)*0.01, a.wind, Math.round(a.cloud)*0.01, a.snow, a.rain, a.air];
-//     a.weatherScore = calculator(myArr);
-//   });
-//   result.sort((a,b) => {
-//     if(a.weatherScore !== b.weatherScore){
-//       return b.weatherScore - a.weatherScore;
-//     } else return 0;
-//   })
-//   console.log(result);
-//   for(let i = 0; i < 10; i++){
-//     const lat = result[i].location.lat;
-//     const lon = result[i].location.lon;
-//     const distance = Math.round(await kimin(lat, lon)/1000)+"km";
-//     const cityName = result[i].city+"";
-//     const city = shortNameArray[cityName];
-//     const weatherScore = result[i].weatherScore;
-//     const temp = result[i].temp+"℃";
-//     const cloud = Math.round(result[i].cloud)+"%";
-//     const wind = result[i].wind+"m/s";
-//     const humid = result[i].humid+"%";
-//     if(result[i].rain !== 0){
-//       const rain = result[i].rain+"mm";
-//     } const rain = "-";
-//     if(result[i].snow !== 0){
-//       const snow = result[i].snow+"mm";
-//     } const snow = "-";
-//     const air = result[i].air;
-//     let order = i+1;
-//     paintTable(order, distance, city, weatherScore, temp, cloud, wind, humid, rain, snow, air);
-//   }
-// }
+
+const sendData = (array, entireArray, j) =>{
+  for(let i = 0; i < array.length; i++){
+    entireArray.push(array[i]);
+    const lat = array[i].location.lat;
+    const lon = array[i].location.lon;
+    const distance = getDistanceFromLatLonInKm(myHome, lat, lon)+"km"
+    const cityName = array[i].city+"";
+    const city = shortNameArray[cityName];
+    const weatherScore = array[i].weatherScore;
+    const temp = array[i].temp+"℃";
+    const cloud = Math.round(array[i].cloud)+"%";
+    const wind = array[i].wind+"m/s";
+    const humid = array[i].humid+"%";
+    if(array[i].rain !== 0){
+      const rain = array[i].rain+"mm";
+    } const rain = "-";
+    if(array[i].snow !== 0){
+      const snow = array[i].snow+"mm";
+    } const snow = "-";
+    const air = array[i].air;
+    const cityEng = array[i].cityEng
+    const order = (j *6) + 1 + i;
+    paintTable(order, distance, city, weatherScore, temp, cloud, wind, humid, rain, snow, air, cityEng);
+    paintMap(cityEng, weatherScore);
+  }
+}
+
 
 const apiCall2 = async (lat, lon) => {
   return $.ajax({
@@ -299,6 +273,7 @@ const apiCall2 = async (lat, lon) => {
     type: "GET",
   });
 };
+
 function getDistanceFromLatLonInKm(myHome, lat2, lng2) {
   const [lat1, lng1] = myHome;
   function deg2rad(deg) {
@@ -341,9 +316,10 @@ const chunk = (arr, size) => {
 }
 
 const drawRows = async (areaArray) => {
+  const finalArray = [];
   const eachArray = chunk(areaArray, 6);
-  for(areaArray of eachArray){
-    const callTask = areaArray.map(async (area) => {
+  for(let j=0; j < eachArray.length; j++){
+    const callTask = eachArray[j].map(async (area) => {
       const result = await apiCall(area.name);
       return result;
     })
@@ -357,31 +333,15 @@ const drawRows = async (areaArray) => {
         return b.weatherScore - a.weatherScore;
       } else return 0;
     })
-  
-    for(let i = 0; i < result.length; i++){
-      const lat = result[i].location.lat;
-      const lon = result[i].location.lon;
-      const distance = getDistanceFromLatLonInKm(myHome, lat, lon)+"km"
-      const cityName = result[i].city+"";
-      const city = shortNameArray[cityName];
-      const weatherScore = result[i].weatherScore;
-      const temp = result[i].temp+"℃";
-      const cloud = Math.round(result[i].cloud)+"%";
-      const wind = result[i].wind+"m/s";
-      const humid = result[i].humid+"%";
-      if(result[i].rain !== 0){
-        const rain = result[i].rain+"mm";
-      } const rain = "-";
-      if(result[i].snow !== 0){
-        const snow = result[i].snow+"mm";
-      } const snow = "-";
-      const air = result[i].air;
-      const cityEng = result[i].cityEng
-      let order = i+1;
-      paintTable(order, distance, city, weatherScore, temp, cloud, wind, humid, rain, snow, air, cityEng);
-      paintMap(cityEng, weatherScore);
-    }
+    sendData(result, finalArray, j)
   }
+  finalArray.sort((a,b) => {
+    if(a.weatherScore !== b.weatherScore){
+      return b.weatherScore - a.weatherScore;
+    } else return 0;
+  })
+  $("#content").html("")
+  sendData(finalArray, [], 0)
 }
 
 const addOptionButton = (option) =>{
@@ -433,9 +393,8 @@ const calculator = (weatherArr) => {
 drawRows(KoreaArray);
 
 const sortAgain = (e) => {
-  const value = e.currentTarget.textContent; //클릭된 메뉴 텍스트 인식
-  //현재 렌더된 도시별 데이터를 매핑
-  const contents = [];
+  value = e.currentTarget.textContent; //클릭된 메뉴 텍스트 인식
+  const contents = [];//현재 렌더된 도시별 데이터를 매핑
   for(i of $("#content").children()) {
     const content ={};
     const cell = i.children;
@@ -467,7 +426,7 @@ const sortAgain = (e) => {
     case '강설': standard = "snow"; break;
     case '공기': standard = "air"; break;
   }
-  for(let i = 0; i < 11; i++) {
+  for(let i = 0; i < $("#content").children().length; i++) {
     $($(".divDia")[i]).removeClass("diamondAscending diamondDescending");
     $($(".divDia")[i]).addClass("diamond");
   }

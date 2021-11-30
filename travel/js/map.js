@@ -371,16 +371,6 @@ const connectMap2Table = (e) => {
   } else $(`#${city}`).removeClass("selected");
 }
 
-const leaveEvent = (e) => {
-  const mapID = e.currentTarget.id;
-  const city = IDObject[mapID];
-  const offset = $(`#${city}`).offset();
-  if(!$(`#${city}`).hasClass("selected")){
-    $(`#${city}`).addClass("selected");
-  } else $(`#${city}`).removeClass("selected");
-}
-
-
 const connectTable2Map = (e) => {
   const rowID = e.currentTarget.id;
   for(let i = 0; i < Object.keys(IDObject).length; i++) {
@@ -392,7 +382,6 @@ const connectTable2Map = (e) => {
     }  
   }
 }
-
 
 const showNewmap = (area) => {
   let map;
@@ -415,7 +404,7 @@ const showNewmap = (area) => {
     connectMap2Table(e);
   })
   area.mouseleave((e)=> {
-    leaveEvent(e);
+    connectMap2Table(e);
   })
 }
 
