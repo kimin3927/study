@@ -11,6 +11,7 @@ body{
   ". f f ."
   ;
   background-color: rgb(20 203 250);
+  font-family: 'Gowun Dodum', sans-serif;
 }
 
 a{
@@ -43,8 +44,34 @@ header{
 
 #option{
   width: 50%;
-  height: 50%;
+  height: 55%;
+  padding: 1%;
   border: 1px solid green;
+}
+
+.submitBtn {
+  background-color: rgb(228, 228, 228);
+  margin-left: 10px;
+  width: 50px;
+  border-radius: 3px;
+}
+
+.submitBtn:active {
+  background-color: rgb(163, 160, 160);
+  margin-left: 10px;
+  font-style: italic;
+  width: 50px;
+  border-radius: 3px;
+}
+
+
+form{
+  display: inline-block;
+  width: 80%;
+}
+
+form > input:focus {
+  outline: transparent
 }
 
 main{
@@ -84,13 +111,15 @@ main{
   top: 25%;
   right: 8%;
   z-index: 0;
+  font-size: 160%;
 }
 
 #ktable{
-  width: 50%;
+  width: 51%;
   height: 85%;
   margin: 0;
   border-radius: 10px;
+  font-size: 1.5vh;
   float: left;
   overflow: auto;
 }
@@ -121,6 +150,7 @@ main{
   text-align: center !important;
   background-color: rgb(220, 235, 234);
   border-radius: 10px 10px 0 0;
+  cursor: pointer;
 }
   #divMenu:active{
     height: 30px;
@@ -189,6 +219,9 @@ footer{
 }
 
 .switch input {display:none;}
+.switch{
+  margin-bottom: 10px;
+}
 
 /* The slider */
 .slider {
@@ -352,4 +385,8 @@ button {
   background-color: transparent;
   border: none;
   padding: 0;
+}
+
+.animate__animated.animate__headShake {
+  --animate-duration: 2s;
 }

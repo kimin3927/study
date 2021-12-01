@@ -180,7 +180,7 @@ $("#ktable").mouseleave((e)=>{
 
 const apiCall_air = async (lat, lon) => {
   const kk = await apiCall2(lat,lon);
-  const airIDX = kk.list[0].main.aqi
+  const airIDX = kk.list[0].main.aqi;
   return airIDX;
 }
 
@@ -201,7 +201,21 @@ const apiCall = async (city) => {
 };
 
 
+const explainAir = () => {
+  console.log(12)
+}
+
+const airMappingObject = {
+  1:`매우좋음`,
+  2:`좋음`,
+  3:`보통`,
+  4:`나쁨`,
+  5:`매우나쁨`,
+}
+
+
 const paintTable = (order, distance, city, weatherScore, temp, cloud, wind, humid, rain, snow, air, cityEng) =>{
+  const airTitle = airMappingObject[air];
   const divTR = $(
   `<div class='divTR' id='${cityEng}'>
   <div class='divTD'>${order}</div>
@@ -214,14 +228,8 @@ const paintTable = (order, distance, city, weatherScore, temp, cloud, wind, humi
   <div class='divTD'>${humid}</div>
   <div class='divTD'>${rain}</div>
   <div class='divTD'>${snow}</div>
-  <div class='divTD'>${air}</div>
+  <div class='divTD' title='${airTitle}'>${air}</div>
   </div>`).appendTo($("#content"));
-  const siblingArray = divTR.parent().children();
-  for(let i = 0; i<siblingArray.length; i++){
-    if(!!siblingArray[i+1] && $($(siblingArray[i]).children()[2]).text() < $($(siblingArray[i+1]).children()[2]).text()){
-      console.log(`${i+1}번째와 ${i+2}번째 : 순서변경필요`)
-    }
-  }
   divTR.mouseenter((e)=>{
     showArrow(e);
     connectTable2Map(e);
@@ -237,7 +245,6 @@ const paintTable = (order, distance, city, weatherScore, temp, cloud, wind, humi
     e.stopPropagation();
   })
 }
-
 
 const sendData = (array, entireArray, j) =>{
   for(let i = 0; i < array.length; i++){
@@ -289,6 +296,9 @@ function getDistanceFromLatLonInKm(myHome, lat2, lng2) {
 }
 
 const myHome = [37.573, 126.935]
+
+console.log(getDistanceFromLatLonInKm(myHome, 35.1048, 129.0333))
+
 
 const paintMap = (cityID, score) => {
   for(let i = 0; i < Object.keys(IDObject).length; i++) {
@@ -342,12 +352,25 @@ const drawRows = async (areaArray) => {
   })
   $("#content").html("")
   sendData(finalArray, [], 0)
+  $("#content").addClass(`animate__animated animate__headShake`);
+  setTimeout( () => {
+    $("#content").removeClass(`animate__animated animate__headShake`)
+  }, 2000);
 }
 
+$("#addressForm").submit((e) => {
+  e.preventDefault();
+  const inputTag = $(e.currentTarget).children()[0];
+  const address = inputTag.value;
+  if(address !== `서울시 서대문구 연희로`){
+    $(inputTag).val(address)
+  }
+})
+
 const addOptionButton = (option) =>{
-  $("#option").append(
-    `<span>${option}</span>
-    <label class='switch'>
+  $("#option").prepend(
+    `<label class='switch'>
+    <span>${option}</span>
     <input type='checkbox'>
     <span class='slider round'></span>
     </label>`
@@ -417,7 +440,7 @@ const sortAgain = (e) => {
     case '순위': standard = "order"; break;
     case '도시': standard = "cityName"; break;
     case '날씨점수': standard = "weatherScore"; break;
-    case '거리점수': standard = "distance"; break;
+    case '거리': standard = "distance"; break;
     case '온도': standard = "temp"; break;
     case '구름': standard = "cloud"; break;
     case '바람': standard = "wind"; break;

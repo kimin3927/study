@@ -1,6 +1,6 @@
 const mapDiv = $("#map");
 
-const KrMap = $(`<svg style=height="767" width="610" viewBox="-400 0 1000 1000" xmlns="http://www.w3.org/2000/svg">
+const KrMap = $(`<svg style=height="757" width="550" viewBox="-400 0 1000 1000" xmlns="http://www.w3.org/2000/svg">
 <defs>
     <filter id="dropshadow">
         <feGaussianBlur in="SourceAlpha" stdDeviation="3" />

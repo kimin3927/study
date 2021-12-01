@@ -10,6 +10,11 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
   <link rel="stylesheet" href = "../style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Nanum+Brush+Script&family=Nanum+Pen+Script&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+/>
 </head>
 <body>
   <nav>
@@ -27,7 +32,21 @@
       </ul>
     </div>
     <p>오늘의 추천 여행지</p>
-    <div id="option"></div>
+    <div id="option">
+      <!-- <form name="form" id="form" method="post">
+        <input type="text" name="resultType" value="json"/>  요청 변수 설정 (검색결과형식 설정, json)
+        <input type="text" name="confmKey" value="TESTJUSOGOKR"/> 요청 변수 설정 (승인키)
+        <input type="text" name="admCd" value=""/>  요청 변수 설정 (행정구역코드)
+        <input type="text" name="rnMgtSn" value=""/> 요청 변수 설정 (도로명코드)
+        <input type="text" name="udrtYn" value=""/>  요청 변수 설정 (지하여부) 
+        <input type="text" name="buldMnnm" value=""/> 요청 변수 설정 (건물본번) 
+        <input type="text" name="buldSlno" value=""/> 요청 변수 설정 (건물부번)
+        <input type="button" onClick="getAddr();" value="좌표검색하기"/>
+        <div id="list" ></div> 검색 결과 리스트 출력 영역
+      </form> -->
+    </br><span>기본주소: </span><form id='addressForm'><input type="text" value='서울시 서대문구 연희로'><button class='submitBtn'>적용</button></form>
+    </div>
+    
   </header>
   <main>
     <article id="two">
@@ -46,7 +65,7 @@
           <div class="divTD">공기<div class="divDia diamond"></div></div>
           <div class="divTD"></div>
         </div>
-        <div id='content' style="background-color: red; z-index: 1000;"></div>
+        <div id='content'></div>
       </div>
       <div id='detail'></div>
     </article>
@@ -78,5 +97,6 @@
   <script type="text/javascript" src="../js/detail.js"></script>
   <script type="text/javascript" src="../js/map.js"></script>
   <script type="text/javascript" src="../js/scoreTable.js"></script>
+  <script type="text/javascript" src="../js/juso.js"></script>
 </body>
 </html>
