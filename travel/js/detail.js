@@ -1,11 +1,13 @@
 const showArrow = (e) => {
+  const scrollTarget = $(e.currentTarget).parent();
   const target = $($(e.currentTarget).children()[11]);
-  console.log(target)
   if(target.data("hoverStatus") !== "on") {
     target.data("hoverStatus", "on")
+    scrollTarget.addClass("hoverTable")
     $(target.children()[0]).removeClass("hidden")
   } else {
     target.data("hoverStatus", "off");
+    scrollTarget.removeClass("hoverTable")
     $(target.children()[0]).addClass("hidden")
   }
 }

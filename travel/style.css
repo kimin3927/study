@@ -11,7 +11,7 @@ body{
   ". f f ."
   ;
   background-color: rgb(20 203 250);
-  overflow-x: none;
+  font-family: 'Gowun Dodum', sans-serif;
 }
 
 a{
@@ -44,8 +44,34 @@ header{
 
 #option{
   width: 50%;
-  height: 50%;
+  height: 55%;
+  padding: 1%;
   border: 1px solid green;
+}
+
+.submitBtn {
+  background-color: rgb(228, 228, 228);
+  margin-left: 10px;
+  width: 50px;
+  border-radius: 3px;
+}
+
+.submitBtn:active {
+  background-color: rgb(163, 160, 160);
+  margin-left: 10px;
+  font-style: italic;
+  width: 50px;
+  border-radius: 3px;
+}
+
+
+form{
+  display: inline-block;
+  width: 80%;
+}
+
+form > input:focus {
+  outline: transparent
 }
 
 main{
@@ -85,28 +111,34 @@ main{
   top: 25%;
   right: 8%;
   z-index: 0;
+  font-size: 160%;
 }
 
 #ktable{
-  width: 50%;
+  width: 51%;
   height: 85%;
   margin: 0;
   border-radius: 10px;
+  font-size: 1.5vh;
   float: left;
-  overflow-y: auto;
-  overflow-x: hidden;
+  overflow: auto;
 }
 
-#ktable::-webkit-scrollbar {
-  width: 15px;
+
+.unhover::-webkit-scrollbar {
+  width: 15px
 }
 
-#ktable::-webkit-scrollbar-track {
-  width: 20px;
-  background-color: rgba(255, 0, 0, 0);
+.hoverTable::-webkit-scrollbar {
+  width: 15px !important;
 }
 
-#ktable::-webkit-scrollbar-thumb {
+.hoverTable::-webkit-scrollbar-track {
+  width: 20px !important;
+  background-color: rgba(255, 0, 0, 0)!important;
+}
+
+.hoverTable::-webkit-scrollbar-thumb {
   width: 20px;
   background-color: rgb(31, 125, 202);
 }
@@ -118,6 +150,7 @@ main{
   text-align: center !important;
   background-color: rgb(220, 235, 234);
   border-radius: 10px 10px 0 0;
+  cursor: pointer;
 }
   #divMenu:active{
     height: 30px;
@@ -186,6 +219,9 @@ footer{
 }
 
 .switch input {display:none;}
+.switch{
+  margin-bottom: 10px;
+}
 
 /* The slider */
 .slider {
@@ -308,7 +344,7 @@ input:checked + .slider:before { /*클릭했을 때 공이 움직이게함 */
 
 .cityinMap{
   fill:rgb(220, 235, 234);
-  transition: all, 2s;
+  transition: all, 0.5s;
 }
 
 .cityinMap:hover{
@@ -316,8 +352,6 @@ input:checked + .slider:before { /*클릭했을 때 공이 움직이게함 */
   stroke: #000000;
   stroke-width: 4;
 }
-
-
 
 .OUTLINE {
   stroke-linejoin:round;
@@ -327,7 +361,6 @@ input:checked + .slider:before { /*클릭했을 때 공이 움직이게함 */
 
 .selected{
   background-color: yellow !important;
-  fill: yellow !important;
   stroke: #000000;
   stroke-width: 4;
 }
@@ -352,4 +385,8 @@ button {
   background-color: transparent;
   border: none;
   padding: 0;
+}
+
+.animate__animated.animate__headShake {
+  --animate-duration: 2s;
 }
