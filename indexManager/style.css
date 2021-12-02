@@ -1,0 +1,131 @@
+
+body{
+    width: 99vw;
+    height: 98vh;
+    display: grid;
+    grid-template-columns: 2% 16% 80% 2%;
+    grid-template-rows: 2% 18% 70% 8% 2%;
+    grid-template-areas: 
+
+    ". . . ."
+    ". h h ."
+    ". n m ."
+    ". f f ."
+    ". . . ."
+
+    ;
+}
+
+header{
+    grid-area: h;
+    border: 1px solid green;
+    margin: 1vw;
+    padding: 1vw;
+}
+
+nav{
+    grid-area: n;
+    border: 1px solid blue;
+    margin: 1vw;
+    padding: 1vw;
+}
+
+li{
+    list-style: none;
+}
+
+main{
+    grid-area: m;
+    border: 1px solid black;
+    margin: 1vw;
+    padding: 1vw;
+}
+
+#tableRowAddBtn{
+    width:100%;
+    height: 1.5vw;
+    margin-top: 10px;
+    border-radius: 10px;
+    border: 0.1px solid grey;
+}
+
+
+table{
+    table-layout: auto;
+    border-collapse:collapse;
+    width: 100%;
+}
+
+thead{
+    background-color: rgb(212, 245, 238);
+}
+
+th{
+    border: 1px solid black;
+}
+
+th:nth-child(5){
+    width: 10%;
+    border: 1px dotted grey;
+}
+
+td{
+    border: 1px solid black;
+}
+
+td:nth-child(1){
+    width: 5%;
+    min-width: 40px;
+    max-width: 200px;
+    text-align: center;
+}
+
+td:nth-child(2){
+    width: 10%;
+    min-width: 100px;
+    max-width: 500px;
+}
+
+td:nth-child(4){
+    width: 10%;
+    min-width: 100px;
+    max-width: 500px;
+}
+
+td:nth-child(3){
+    min-width: 200px;
+}
+
+
+td:nth-child(5){
+    width: 10%;
+    border: 1px dotted grey;
+}
+
+
+footer{
+    grid-area: f;
+    border: 1px solid red;
+    margin: 1vw;
+    padding: 1vw;
+}
+
+
+.hoverHidden{
+    opacity: -1;
+}
+
+
+.hoverHidden:hover {
+    opacity: 1;
+}
+
+
+.hoverHidden > button{
+    background-color: transparent;
+    border: none;
+}
+
+.hoverHidden > button:active{
+    background-color: grey;
+}
