@@ -71,6 +71,42 @@ th:nth-child(5){
 
 td{
     border: 1px solid black;
+    height: 20px;
+    vertical-align: top;
+}
+
+p{
+    margin: 0;
+    height: 100%;
+}
+
+.title{
+    width: 95%;
+    float: left;
+}
+
+.extension{
+    float: left;
+    width: 40px;
+    margin:0;
+    text-align: right;
+}
+
+.extensionBtn{
+    border: none;
+    font-weight: bolder;
+    background-color: transparent;
+}
+
+.contents{
+    width: 100%;
+    min-height: 100px;
+    display:none;
+}
+
+.contents p{
+    min-height: 100px;
+    height: 100%;
 }
 
 td:nth-child(1){
@@ -84,6 +120,7 @@ td:nth-child(2){
     width: 10%;
     min-width: 100px;
     max-width: 500px;
+    text-align: center;
 }
 
 td:nth-child(4){
@@ -128,4 +165,6 @@ footer{
 
 .hoverHidden > button:active{
     background-color: grey;
+    border: 1px solid rgb(85, 84, 84);
+    border-radius: 5px;
 }
