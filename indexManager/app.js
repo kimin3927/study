@@ -47,7 +47,7 @@ const addNewTableRow = () => {
             <div class='contents'><p contenteditable="true"></p></div>
         </td>
         <td contenteditable="true"></td>
-        <td><div class='hoverHidden'><button class='saveBtn'>등록</button><button style=color:red>삭제</button><button>추가</button></div></td>
+        <td><div class='hoverHidden'><button class='saveBtn'>완료</button><button style=color:red>삭제</button><button>추가</button></div></td>
     </tr>
     `).prependTo($("table")); 
 }
@@ -62,19 +62,33 @@ class group {
     }
 }
 
-const saveTableItem = (e) => {
-    const targetTR = $($(e.currentTarget).parents()[2]);
-    console.log(targetTR);
-    const itemGroup = new group(
-        $(targetTR.children()[0]).text(),
-        $(targetTR.children()[1]).text(),
-        $($($(targetTR.children()[2])).children()[0]).text(),
-        $($($(targetTR.children()[2])).children()[3]).text(),
-        $(targetTR.children()[3]).text(),
-    )
-    const order = $($(targetTR)+".order");
-    console.log(itemGroup);
+let itemsArray = [];
+
+const sortItemGroups = (ItemGrops) => {
+    ItemGrops.sort((a,b) => {
+        return a["order"] - b["order"];
+    })
 }
+
+const saveTableItem = () => { 
+    const TRArray = $("tbody").children();
+    itemsArray = [];
+    for(i of TRArray){
+        const tr = $(i);
+        const itemGroup = new group(
+            $(tr.children()[0]).text() * 1,
+            $(tr.children()[1]).text(),
+            $($($(tr.children()[2])).children()[0]).text().trim(),
+            $($($(tr.children()[2])).children()[3]).text(),
+            $(tr.children()[3]).text(),
+        )
+        itemsArray.push(itemGroup)
+    }
+    sortItemGroups(itemsArray);
+    console.log(itemsArray);
+    connecttable2Index(itemsArray);
+}
+
 
 const controlExtensionBtn = (e) => {
     const targetBtn = $(e.currentTarget);
@@ -89,25 +103,46 @@ const controlExtensionBtn = (e) => {
     }
 }
 
-const connecttable2Index = () => {
+const connecttable2Index = (itemsArray) => {
     const NumberOfItem = $($("tbody").children()).length;
     $("nav ul").html("");
-    for(let i = 1; i < NumberOfItem + 1; i++){
-        const newItemIndex = $(`<li>${i}.기민<li>`).appendTo($("nav ul"));
+    for(let i = 0; i < NumberOfItem; i++){
+        title = itemsArray[i].title;
+        const newItemIndex = $(`<li>${i+1}.${title}<li>`).appendTo($("nav ul"));
     }
 }
+
+
+let timer;
+
+const checkChange = (e) => {
+    if(timer){
+        clearTimeout(timer);
+    }
+    timer = setTimeout(()=>{
+        saveTableItem()
+    }, 500)
+}
+
+
+
 
 const showFirstPage = () => {
     $("main").prepend(originTable);
     const addBtn = $(tableRowAddBtn).appendTo($("main"));
     addBtn.click((e)=> {
         addNewTableRow();
-        $("tbody button").off()
-        $(".saveBtn").click((e) => {saveTableItem(e)});
+        $("tbody").off()
         $(".extensionBtn").click((e) => {controlExtensionBtn(e)});
-        connecttable2Index()
+        saveTableItem()
+        connecttable2Index(itemsArray)
+        $("tbody").keyup((e)=>{
+            checkChange(e);
+        })
     })
     $("nav").prepend(originNav);
 }
+
+
 
 showFirstPage()
