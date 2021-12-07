@@ -29,15 +29,17 @@ const tableRowAddBtn =
 
 const addNewTableRow = () => {
     const lastOrderDiv = $($("tbody td")[0])
-    let lastOrder = lastOrderDiv.text() * 1;
-    if(!lastOrder){
+    let lastOrder;
+    if(!itemsArray[0]){
         lastOrder = 0;    
+    } else {
+        lastOrder = itemsArray[itemsArray.length - 1].order * 1;
     }
     $(`
     <tr>
         <td class='order' contenteditable="true">${lastOrder + 1}</td>
         <td class='regisDate' contenteditable="true"></td>
-        <td>
+        <td class='content'>
             <div class='title'>
                 <p contenteditable="true"></p>
             </div>
@@ -47,7 +49,7 @@ const addNewTableRow = () => {
             <div class='contents'><p contenteditable="true"></p></div>
         </td>
         <td contenteditable="true"></td>
-        <td><div class='hoverHidden'><button class='saveBtn'>완료</button><button style=color:red>삭제</button><button>추가</button></div></td>
+        <td><div class='hoverHidden'><button class='saveBtn'>완료</button><button style=color:red>삭제</button><button class='makeSub'>추가</button></div></td>
     </tr>
     `).prependTo($("table")); 
 }
@@ -76,30 +78,29 @@ const saveTableItem = () => {
     for(i of TRArray){
         const tr = $(i);
         const itemGroup = new group(
-            $(tr.children()[0]).text() * 1,
+            $(tr.children(".order")).text() * 1,
             $(tr.children()[1]).text(),
             $($($(tr.children()[2])).children()[0]).text().trim(),
             $($($(tr.children()[2])).children()[3]).text(),
             $(tr.children()[3]).text(),
         )
         itemsArray.push(itemGroup)
+        console.log(itemGroup)
     }
     sortItemGroups(itemsArray);
     console.log(itemsArray);
     connecttable2Index(itemsArray);
 }
 
-
 const controlExtensionBtn = (e) => {
     const targetBtn = $(e.currentTarget);
-    const targetTR = $(targetBtn.parents()[2]);
-    const targetContents = $($(targetTR.children()[2]).children(".contents"));
+    const targetTR = $(targetBtn.parents("tr"));
+    const targetContents = targetTR.children(".content").children(".contents");
+    targetContents.slideToggle(1);
     if(targetBtn.text() =="∨"){
         targetBtn.text("∧");
-        targetContents.css('display', 'block');
     } else {
         targetBtn.text("∨");
-        targetContents.css('display', 'none');
     }
 }
 
@@ -112,7 +113,6 @@ const connecttable2Index = (itemsArray) => {
     }
 }
 
-
 let timer;
 
 const checkChange = (e) => {
@@ -121,28 +121,71 @@ const checkChange = (e) => {
     }
     timer = setTimeout(()=>{
         saveTableItem()
-    }, 500)
+    }, 300)
 }
 
+const renderTableAgain = (trGroup) =>{
+    $("tbody").html("");
+    for(let i = 0; i < trGroup.length; i++){
+        const TableContents = $(`<tr>
+        <td class='order' contenteditable="true">${trGroup[i].order}</td>
+        <td class='regisDate' contenteditable="true"></td>
+        <td class='content'>
+            <div class='title'>
+                <p contenteditable="true"></p>
+            </div>
+            <div class='extension hoverHidden'>
+                <button class='extensionBtn'>∨</button>
+            </div></br>
+            <div class='contents'><p contenteditable="true"></p></div>
+        </td>
+        <td contenteditable="true"></td>
+        <td><div class='hoverHidden'><button class='saveBtn'>완료</button><button style=color:red>삭제</button><button class='makeSub'>추가</button></div></td>
+    </tr>`).prependTo($("tbody"));
+    }
+    $(".extensionBtn").off()
+    $(".tbody").off()
+    $(".makeSub").off()
+    saveTableItem()
+    $(".extensionBtn").click((e) => {controlExtensionBtn(e)});
+    $("tbody").keyup((e)=>{
+        checkChange(e);
+    })
+    $(`.makeSub`).click((e) => {
+        makeSubItem(e)
+    })
+}
 
-
+const makeSubItem = (e) => {
+    const targetTR = $(e.currentTarget).parents("tr")
+    const motherNumber = $(targetTR.children(`.order`)).text();
+    const myOrder = motherNumber*1 + 0.1;
+    const item = new group(myOrder);
+    console.log(targetTR.index());
+    itemsArray.splice(targetTR.index(),0,item)
+    sortItemGroups(itemsArray)
+    console.log(itemsArray)
+    renderTableAgain(itemsArray);
+}
 
 const showFirstPage = () => {
     $("main").prepend(originTable);
     const addBtn = $(tableRowAddBtn).appendTo($("main"));
     addBtn.click((e)=> {
         addNewTableRow();
-        $("tbody").off()
-        $(".extensionBtn").click((e) => {controlExtensionBtn(e)});
+        $(".extensionBtn").off()
+        $(".tbody").off()
+        $(".makeSub").off()
         saveTableItem()
-        connecttable2Index(itemsArray)
+        $(".extensionBtn").click((e) => {controlExtensionBtn(e)});
         $("tbody").keyup((e)=>{
             checkChange(e);
+        })
+        $(`.makeSub`).click((e) => {
+            makeSubItem(e)
         })
     })
     $("nav").prepend(originNav);
 }
-
-
 
 showFirstPage()
