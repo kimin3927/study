@@ -113,7 +113,6 @@ const connecttable2Index = (itemsArray) => {
     }
 }
 
-
 let timer;
 
 const checkChange = (e) => {
@@ -122,17 +121,52 @@ const checkChange = (e) => {
     }
     timer = setTimeout(()=>{
         saveTableItem()
-    }, 500)
+    }, 300)
+}
+
+const renderTableAgain = (trGroup) =>{
+    $("tbody").html("");
+    for(let i = 0; i < trGroup.length; i++){
+        const TableContents = $(`<tr>
+        <td class='order' contenteditable="true">${trGroup[i].order}</td>
+        <td class='regisDate' contenteditable="true"></td>
+        <td class='content'>
+            <div class='title'>
+                <p contenteditable="true"></p>
+            </div>
+            <div class='extension hoverHidden'>
+                <button class='extensionBtn'>∨</button>
+            </div></br>
+            <div class='contents'><p contenteditable="true"></p></div>
+        </td>
+        <td contenteditable="true"></td>
+        <td><div class='hoverHidden'><button class='saveBtn'>완료</button><button style=color:red>삭제</button><button class='makeSub'>추가</button></div></td>
+    </tr>`).prependTo($("tbody"));
+    }
+    $(".extensionBtn").off()
+    $(".tbody").off()
+    $(".makeSub").off()
+    saveTableItem()
+    $(".extensionBtn").click((e) => {controlExtensionBtn(e)});
+    $("tbody").keyup((e)=>{
+        checkChange(e);
+    })
+    $(`.makeSub`).click((e) => {
+        makeSubItem(e)
+    })
 }
 
 const makeSubItem = (e) => {
     const targetTR = $(e.currentTarget).parents("tr")
-    console.log(targetTR.children(`.order`))
-    const numberOfSubItem = targetTR.children(`.order`).children().length
-    const subOrderDiv = targetTR.children(`.order`).append(`<div class='blank'><div class='subOrder'>1-${numberOfSubItem + 1}</div></div>`);
-    const subRegisDate = targetTR.children(`.regisDate`).append(`</br><div class='subRegisDate'></div>`);
+    const motherNumber = $(targetTR.children(`.order`)).text();
+    const myOrder = motherNumber*1 + 0.1;
+    const item = new group(myOrder);
+    console.log(targetTR.index());
+    itemsArray.splice(targetTR.index(),0,item)
+    sortItemGroups(itemsArray)
+    console.log(itemsArray)
+    renderTableAgain(itemsArray);
 }
-
 
 const showFirstPage = () => {
     $("main").prepend(originTable);
@@ -143,7 +177,6 @@ const showFirstPage = () => {
         $(".tbody").off()
         $(".makeSub").off()
         saveTableItem()
-        connecttable2Index(itemsArray)
         $(".extensionBtn").click((e) => {controlExtensionBtn(e)});
         $("tbody").keyup((e)=>{
             checkChange(e);
@@ -154,7 +187,5 @@ const showFirstPage = () => {
     })
     $("nav").prepend(originNav);
 }
-
-
 
 showFirstPage()
