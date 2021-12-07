@@ -101,7 +101,8 @@ p{
 .contents{
     width: 100%;
     min-height: 100px;
-    display:none;
+    border: 1px solid green;
+    display: none;
 }
 
 .contents p{
@@ -109,7 +110,7 @@ p{
     height: 100%;
 }
 
-td:nth-child(1){
+.order{
     width: 5%;
     min-width: 40px;
     max-width: 200px;
@@ -139,6 +140,28 @@ td:nth-child(5){
     border: 1px dotted grey;
 }
 
+.blank{
+    display: inline-block;
+    width:100%;
+    height: 50%;
+    text-align: right;
+}
+
+.subOrder{
+    display: inline-block;
+    width: 70%;
+    height: 100%;
+    border-top: solid 0.5px grey;
+    border-left: solid 0.5px grey;
+    text-align: center;
+}
+
+.subRegisDate{
+    display: inline-block;
+    width: 70%;
+    height: 50%;
+    border: purple 1px solid;
+}
 
 footer{
     grid-area: f;
@@ -150,6 +173,7 @@ footer{
 
 .hoverHidden{
     opacity: -1;
+    height: 100%;
 }
 
 
