@@ -5,11 +5,11 @@ const originTable =
 <table>
     <thead>
         <tr>
-            <th contenteditable="true">순번</th>
-            <th contenteditable="true">날짜</th>
-            <th contenteditable="true">내용</th>
-            <th contenteditable="true">완료</th>
-            <th contenteditable="true">관리</th>
+            <th>순번</th>
+            <th>날짜</th>
+            <th>내용</th>
+            <th>완료</th>
+            <th>관리</th>
         </tr>
     </thead>
     <tbody>
@@ -28,64 +28,89 @@ const tableRowAddBtn =
 `;
 
 const addNewTableRow = () => {
-    const lastOrderDiv = $($("tbody td")[0])
-    let lastOrder;
+    let lastNumber;
     if(!itemsArray[0]){
-        lastOrder = 0;    
+        lastNumber = 0;    
     } else {
-        lastOrder = itemsArray[itemsArray.length - 1].order * 1;
+        lastNumber = itemsArray[itemsArray.length - 1].number * 1;
     }
+    const regisDate = ClockSet();
     $(`
     <tr>
-        <td class='order' contenteditable="true">${lastOrder + 1}</td>
-        <td class='regisDate' contenteditable="true"></td>
+        <td class='number'>${lastNumber + 1}</td>
+        <td class='regisDate'>${regisDate}</td>
         <td class='content'>
-            <div class='title'>
-                <p contenteditable="true"></p>
+            <div class='contentWrapper'>
+                <div class='title'>
+                    <input>
+                </div>
+                <div class='contents'>
+                    <input>
+                </div>
             </div>
             <div class='extension hoverHidden'>
                 <button class='extensionBtn'>∨</button>
-            </div></br>
-            <div class='contents'><p contenteditable="true"></p></div>
+            </div>
         </td>
         <td contenteditable="true"></td>
-        <td><div class='hoverHidden'><button class='saveBtn'>완료</button><button style=color:red>삭제</button><button class='makeSub'>추가</button></div></td>
+        <td><div class='hoverHidden'><button class='saveBtn'>완료</button><button class='remove' style=color:red>삭제</button><button class='makeSub'>추가</button></div></td>
     </tr>
     `).prependTo($("table")); 
 }
 
 class group {
-    constructor(order, registDate, title, contents, finDate){
-        this.order = order;
+    constructor(number, registDate, title, contents, finDate, order, motherNumber){
+        this.number = number;
         this.registDate = registDate;
         this.title = title;
         this.finDate = finDate;
         this.contents = contents;
+        this.order = order;
+        this.motherNumber = motherNumber;
     }
+}
+
+function ClockSet(){
+    const date = new Date();
+    const Year = date.getFullYear();
+    const Month = date.getMonth();
+    const date2 = date.getDate();
+    const day = date.getDay();
+    const hours = String(date.getHours()).padStart(2,"0");
+    const minuetes = String(date.getMinutes()).padStart(2,"0");
+    const seconds  = String(date.getSeconds()).padStart(2,"0");
+    return `${Month}/${date2} ${hours}:${minuetes}`;
 }
 
 let itemsArray = [];
 
 const sortItemGroups = (ItemGrops) => {
     ItemGrops.sort((a,b) => {
-        return a["order"] - b["order"];
+        return b["order"] - a["order"];
     })
 }
 
 const saveTableItem = () => { 
     const TRArray = $("tbody").children();
+    let lastOrder;
+    if(!itemsArray[0]){
+        lastOrder = 0;
+    } else {
+        lastOrder = itemsArray[itemsArray.length - 1].order;
+    }
     itemsArray = [];
     for(i of TRArray){
         const tr = $(i);
         const itemGroup = new group(
-            $(tr.children(".order")).text() * 1,
+            $(tr.children(".number")).text() * 1,
             $(tr.children()[1]).text(),
-            $($($(tr.children()[2])).children()[0]).text().trim(),
+            $($($(tr.children()[2])).children()[0]).text(),
             $($($(tr.children()[2])).children()[3]).text(),
             $(tr.children()[3]).text(),
+            lastOrder++,
+            Math.floor($(tr.children(".number")).text() * 1)
         )
         itemsArray.push(itemGroup)
-        console.log(itemGroup)
     }
     sortItemGroups(itemsArray);
     console.log(itemsArray);
@@ -95,8 +120,8 @@ const saveTableItem = () => {
 const controlExtensionBtn = (e) => {
     const targetBtn = $(e.currentTarget);
     const targetTR = $(targetBtn.parents("tr"));
-    const targetContents = targetTR.children(".content").children(".contents");
-    targetContents.slideToggle(1);
+    const targetContents = $($(targetTR.children(".content")).children()).children(".contents");
+    targetContents.slideToggle();
     if(targetBtn.text() =="∨"){
         targetBtn.text("∧");
     } else {
@@ -128,7 +153,7 @@ const renderTableAgain = (trGroup) =>{
     $("tbody").html("");
     for(let i = 0; i < trGroup.length; i++){
         const TableContents = $(`<tr>
-        <td class='order' contenteditable="true">${trGroup[i].order}</td>
+        <td class='number' contenteditable="true">${trGroup[i].number}</td>
         <td class='regisDate' contenteditable="true"></td>
         <td class='content'>
             <div class='title'>
@@ -136,11 +161,11 @@ const renderTableAgain = (trGroup) =>{
             </div>
             <div class='extension hoverHidden'>
                 <button class='extensionBtn'>∨</button>
-            </div></br>
+            </div>
             <div class='contents'><p contenteditable="true"></p></div>
         </td>
         <td contenteditable="true"></td>
-        <td><div class='hoverHidden'><button class='saveBtn'>완료</button><button style=color:red>삭제</button><button class='makeSub'>추가</button></div></td>
+        <td><div class='hoverHidden'><button class='saveBtn'>완료</button><button class='remove' style=color:red>삭제</button><button class='makeSub'>추가</button></div></td>
     </tr>`).prependTo($("tbody"));
     }
     $(".extensionBtn").off()
@@ -156,15 +181,35 @@ const renderTableAgain = (trGroup) =>{
     })
 }
 
+
+const removeTableItem = (e) => {
+    const targetTR = $(e.currentTarget).parents("tr");
+    $(targetTR).remove()
+}
+
+
 const makeSubItem = (e) => {
     const targetTR = $(e.currentTarget).parents("tr")
-    const motherNumber = $(targetTR.children(`.order`)).text();
-    const myOrder = motherNumber*1 + 0.1;
-    const item = new group(myOrder);
-    console.log(targetTR.index());
-    itemsArray.splice(targetTR.index(),0,item)
+    const motherNumber = $(targetTR.children(`.number`)).text();
+    const motherOrder = targetTR.index()
+    let sibling = 0;
+    let mydd;
+    for(let i = 0; i < itemsArray.length; i++){
+        if(itemsArray[i].motherNumber == motherNumber){
+            ElderBro = itemsArray[i].order
+            break;
+        }
+    }
+    for(let i = 0; i < itemsArray.length; i++){
+        if(itemsArray[i].motherNumber == motherNumber){
+        sibling++
+    }}
+    myNumber = motherNumber * 1 + ((sibling) * 0.1);
+    myOrder = ElderBro * 1 + 0.1;
+    const item = new group(myNumber, "","","","",myOrder, motherNumber);
+    console.log(itemsArray);
+    itemsArray.push(item)
     sortItemGroups(itemsArray)
-    console.log(itemsArray)
     renderTableAgain(itemsArray);
 }
 
@@ -183,6 +228,9 @@ const showFirstPage = () => {
         })
         $(`.makeSub`).click((e) => {
             makeSubItem(e)
+        })
+        $(`.remove`).click((e) => {
+            removeTableItem(e)
         })
     })
     $("nav").prepend(originNav);
