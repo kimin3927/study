@@ -101,19 +101,19 @@ const saveTableItem = () => {
     itemsArray = [];
     for(i of TRArray){
         const tr = $(i);
-        const itemGroup = new group(
-            $(tr.children(".number")).text() * 1,
-            $(tr.children()[1]).text(),
-            $($($(tr.children()[2])).children()[0]).text(),
-            $($($(tr.children()[2])).children()[3]).text(),
-            $(tr.children()[3]).text(),
-            lastOrder++,
-            Math.floor($(tr.children(".number")).text() * 1)
-        )
+        const number = $(tr.children(".number")).text() * 1;
+        const registDate = $(tr.children()[1]).text();
+        const title = $($($(tr.children(".content")).children(".contentWrapper")).children(".title")).children().val();
+        const contents = $($($(tr.children(".content")).children(".contentWrapper")).children(".contents")).children().val();
+        const finDate = $(tr.children()[3]).text();
+        const order = lastOrder++;
+        const motherNumber = Math.floor($(tr.children(".number")).text() * 1);
+        const itemGroup = new group(number, registDate, title, contents, finDate, order, motherNumber)
         itemsArray.push(itemGroup)
     }
     sortItemGroups(itemsArray);
-    console.log(itemsArray);
+    console.log(itemsArray)
+    localStorage.setItem("first",JSON.stringify(itemsArray));
     connecttable2Index(itemsArray);
 }
 
@@ -131,6 +131,7 @@ const controlExtensionBtn = (e) => {
 
 const connecttable2Index = (itemsArray) => {
     const NumberOfItem = $($("tbody").children()).length;
+    console.log("연결")
     $("nav ul").html("");
     for(let i = 0; i < NumberOfItem; i++){
         title = itemsArray[i].title;
@@ -156,13 +157,17 @@ const renderTableAgain = (trGroup) =>{
         <td class='number' contenteditable="true">${trGroup[i].number}</td>
         <td class='regisDate' contenteditable="true"></td>
         <td class='content'>
-            <div class='title'>
-                <p contenteditable="true"></p>
+            <div class='contentWrapper'>
+                <div class='title'>
+                    <input>
+                </div>
+                <div class='contents'>
+                    <input>
+                </div>
             </div>
             <div class='extension hoverHidden'>
                 <button class='extensionBtn'>∨</button>
             </div>
-            <div class='contents'><p contenteditable="true"></p></div>
         </td>
         <td contenteditable="true"></td>
         <td><div class='hoverHidden'><button class='saveBtn'>완료</button><button class='remove' style=color:red>삭제</button><button class='makeSub'>추가</button></div></td>
@@ -186,6 +191,39 @@ const removeTableItem = (e) => {
     const targetTR = $(e.currentTarget).parents("tr");
     $(targetTR).remove()
 }
+
+const reCallData = () => {
+    const data = JSON.parse(localStorage.getItem("first"))
+    if(data){
+        for(let i = 0; i < data.length; i++){
+            console.log(data[i])
+            itemsArray.push(data[i]);
+            $(`
+            <tr>
+                <td class='number'>${data[i].number}</td>
+                <td class='regisDate'>${data[i].registDate}</td>
+                <td class='content'>
+                    <div class='contentWrapper'>
+                        <div class='title'>
+                            <input>
+                        </div>
+                        <div class='contents'>
+                            <input>
+                        </div>
+                    </div>
+                    <div class='extension hoverHidden'>
+                        <button class='extensionBtn'>∨</button>
+                    </div>
+                </td>
+                <td contenteditable="true"></td>
+                <td><div class='hoverHidden'><button class='saveBtn'>완료</button><button class='remove' style=color:red>삭제</button><button class='makeSub'>추가</button></div></td>
+            </tr>
+            `).prependTo($("tbody")); 
+        }
+    }
+    saveTableItem()
+}
+
 
 
 const makeSubItem = (e) => {
@@ -237,3 +275,4 @@ const showFirstPage = () => {
 }
 
 showFirstPage()
+reCallData()
