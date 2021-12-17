@@ -28,6 +28,13 @@ nav{
     border: 1px solid blue;
     margin: 1vw;
     padding: 1vw;
+    overflow-y: auto;
+}
+
+nav > ul {
+    padding-left: 0;
+    font-size: 0.8vw;
+    line-height: 2.5vh;
 }
 
 li{
@@ -129,32 +136,22 @@ p{
 }
 
 .number{
-    width: 5%;
-    min-width: 40px;
-    max-width: 200px;
+    width: 7%;
     border-radius: 10px 0 0 10px;
     text-align: center;
 }
 
-td:nth-child(2){
-    width: 7%;
-    min-width: 100px;
+.registDate{
+    width: 10%;
     text-align: center;
 }
 
-td:nth-child(4){
+.finDate{
     width: 10%;
-    min-width: 100px;
-    max-width: 500px;
 }
 
-td:nth-child(3){
-    min-width: 100px;
-}
-
-
-td:nth-child(5){
-    width: 11%;
+.btnManager{
+    width: 3%;
     border-radius: 0 10px 10px 0;
 }
 

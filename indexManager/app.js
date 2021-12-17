@@ -27,6 +27,31 @@ const tableRowAddBtn =
 <button id='tableRowAddBtn'>+</button>
 `;
 
+const addTableRow = (number, registDate, title, contents, finDate, motherNumber) => {
+    $(`
+    <tr>
+        <td class='motherNumber' style='display:none';>${motherNumber}</td>
+        <td class='number'>${number}</td>
+        <td class='registDate'>${registDate}</td>
+        <td class='content'>
+            <div class='contentWrapper'>
+                <div class='title'>
+                    <input value=${title}>
+                </div>
+                <div class='contents'>
+                    <input value=${contents}>
+                </div>
+            </div>
+            <div class='extension hoverHidden'>
+                <button class='extensionBtn'>∨</button>
+            </div>
+        </td>
+        <td class='finDate'><input value=${finDate}></td>
+        <td class='btnManager'><div class='hoverHidden'><button class='saveBtn'>완료</button><button class='remove' style=color:red>삭제</button><button class='makeSub'>추가</button></div></td>
+    </tr>
+    `).prependTo($("tbody")); 
+}
+
 const addNewTableRow = () => {
     let lastNumber;
     if(!itemsArray[0]){
@@ -34,28 +59,8 @@ const addNewTableRow = () => {
     } else {
         lastNumber = itemsArray[itemsArray.length - 1].number * 1;
     }
-    const regisDate = ClockSet();
-    $(`
-    <tr>
-        <td class='number'>${lastNumber + 1}</td>
-        <td class='regisDate'>${regisDate}</td>
-        <td class='content'>
-            <div class='contentWrapper'>
-                <div class='title'>
-                    <input>
-                </div>
-                <div class='contents'>
-                    <input>
-                </div>
-            </div>
-            <div class='extension hoverHidden'>
-                <button class='extensionBtn'>∨</button>
-            </div>
-        </td>
-        <td contenteditable="true"></td>
-        <td><div class='hoverHidden'><button class='saveBtn'>완료</button><button class='remove' style=color:red>삭제</button><button class='makeSub'>추가</button></div></td>
-    </tr>
-    `).prependTo($("table")); 
+    const registDate = ClockSet();
+    addTableRow(lastNumber+1, registDate,"","","","")
 }
 
 class group {
@@ -102,10 +107,10 @@ const saveTableItem = () => {
     for(i of TRArray){
         const tr = $(i);
         const number = $(tr.children(".number")).text() * 1;
-        const registDate = $(tr.children()[1]).text();
+        const registDate = $(tr.children(".registDate")).text();
         const title = $($($(tr.children(".content")).children(".contentWrapper")).children(".title")).children().val();
         const contents = $($($(tr.children(".content")).children(".contentWrapper")).children(".contents")).children().val();
-        const finDate = $(tr.children()[3]).text();
+        const finDate = $($($(tr.children(".finDate"))).children()).val();
         const order = lastOrder++;
         const motherNumber = Math.floor($(tr.children(".number")).text() * 1);
         const itemGroup = new group(number, registDate, title, contents, finDate, order, motherNumber)
@@ -153,75 +158,46 @@ const checkChange = (e) => {
 const renderTableAgain = (trGroup) =>{
     $("tbody").html("");
     for(let i = 0; i < trGroup.length; i++){
-        const TableContents = $(`<tr>
-        <td class='number' contenteditable="true">${trGroup[i].number}</td>
-        <td class='regisDate' contenteditable="true"></td>
-        <td class='content'>
-            <div class='contentWrapper'>
-                <div class='title'>
-                    <input>
-                </div>
-                <div class='contents'>
-                    <input>
-                </div>
-            </div>
-            <div class='extension hoverHidden'>
-                <button class='extensionBtn'>∨</button>
-            </div>
-        </td>
-        <td contenteditable="true"></td>
-        <td><div class='hoverHidden'><button class='saveBtn'>완료</button><button class='remove' style=color:red>삭제</button><button class='makeSub'>추가</button></div></td>
-    </tr>`).prependTo($("tbody"));
+        addTableRow(trGroup[i].number, trGroup[i].registDate, trGroup[i].title, trGroup[i].contents, trGroup[i].finDate, trGroup[i].motherNumber)
     }
     $(".extensionBtn").off()
-    $(".tbody").off()
+    $("tbody").off()
     $(".makeSub").off()
+    $(`.remove`).off()
     saveTableItem()
     $(".extensionBtn").click((e) => {controlExtensionBtn(e)});
-    $("tbody").keyup((e)=>{
-        checkChange(e);
-    })
-    $(`.makeSub`).click((e) => {
-        makeSubItem(e)
-    })
+    $("tbody").keyup((e)=>{checkChange(e);})
+    $(`.makeSub`).click((e) => {makeSubItem(e)})
+    $(`.remove`).click((e) => {removeTableItem(e)})
 }
 
 
 const removeTableItem = (e) => {
     const targetTR = $(e.currentTarget).parents("tr");
-    $(targetTR).remove()
+    $(targetTR).remove();
+    ///
+    const allLines = $("tbody").children();
+    for(let i = allLines.length - 1 ; i > -1; i--){
+        console.log($(allLines[i]).children(".number").text(allLines.length - i))
+    }
+    //
+    saveTableItem();
 }
 
 const reCallData = () => {
     const data = JSON.parse(localStorage.getItem("first"))
+    console.log(data);
     if(data){
         for(let i = 0; i < data.length; i++){
-            console.log(data[i])
             itemsArray.push(data[i]);
-            $(`
-            <tr>
-                <td class='number'>${data[i].number}</td>
-                <td class='regisDate'>${data[i].registDate}</td>
-                <td class='content'>
-                    <div class='contentWrapper'>
-                        <div class='title'>
-                            <input>
-                        </div>
-                        <div class='contents'>
-                            <input>
-                        </div>
-                    </div>
-                    <div class='extension hoverHidden'>
-                        <button class='extensionBtn'>∨</button>
-                    </div>
-                </td>
-                <td contenteditable="true"></td>
-                <td><div class='hoverHidden'><button class='saveBtn'>완료</button><button class='remove' style=color:red>삭제</button><button class='makeSub'>추가</button></div></td>
-            </tr>
-            `).prependTo($("tbody")); 
+            addTableRow(data[i].number, data[i].registDate, data[i].title, data[i].contents, data[i].finDate, data[i].motherNumber)
         }
+        $(".extensionBtn").click((e) => {controlExtensionBtn(e)});
+        $("tbody").keyup((e)=>{checkChange(e);})
+        $(`.makeSub`).click((e) => {makeSubItem(e)})
+        $(`.remove`).click((e) => {removeTableItem(e)})
+        connecttable2Index(itemsArray);
     }
-    saveTableItem()
 }
 
 
@@ -257,19 +233,14 @@ const showFirstPage = () => {
     addBtn.click((e)=> {
         addNewTableRow();
         $(".extensionBtn").off()
-        $(".tbody").off()
+        $("tbody").off()
         $(".makeSub").off()
+        $(".remove").off()
         saveTableItem()
         $(".extensionBtn").click((e) => {controlExtensionBtn(e)});
-        $("tbody").keyup((e)=>{
-            checkChange(e);
-        })
-        $(`.makeSub`).click((e) => {
-            makeSubItem(e)
-        })
-        $(`.remove`).click((e) => {
-            removeTableItem(e)
-        })
+        $("tbody").keyup((e)=>{checkChange(e);})
+        $(`.makeSub`).click((e) => {makeSubItem(e)})
+        $(`.remove`).click((e) => {removeTableItem(e)})
     })
     $("nav").prepend(originNav);
 }
