@@ -72,8 +72,19 @@ th{
 }
 
 tr{
-    background-color: rgb(200, 209, 209);
     border: 2px solid white;
+}
+
+.firstLevel {
+    background-color: rgba(128, 128, 128, 1);
+}
+
+.secondLevel {
+    background-color: rgba(128, 128, 128, 0.8);
+}
+
+.thirdLevel{
+    background-color: rgba(128, 128, 128, 0.5);;
 }
 
 th:nth-child(1){
@@ -188,7 +199,6 @@ footer{
 
 .hoverHidden{
     opacity: 1;
-    visi
 }
 
 

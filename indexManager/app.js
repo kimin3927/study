@@ -27,9 +27,20 @@ const tableRowAddBtn =
 <button id='tableRowAddBtn'>+</button>
 `;
 
-const addTableRow = (number, registDate, title, contents, finDate, motherNumber) => {
+const addTableRow = (number, registDate, title, contents, finDate, motherNumber, level) => {
+    let levelClass ="";
+    const matchObject = {
+        "null" : "firstLevel",
+        "NaN" : "firstLevel",
+        "1" : "secondLevel",
+        "2" : "thirdLevel",
+        "3" : "forthLevel",
+        "4" : "fifthLevel",
+    }
+    levelClass = matchObject[level];
     $(`
-    <tr>
+    <tr class='${levelClass}'>
+        <td class='level' style='display:none';>${level}</td>
         <td class='motherNumber' style='display:none';>${motherNumber}</td>
         <td class='number'>${number}</td>
         <td class='registDate'>${registDate}</td>
@@ -64,7 +75,7 @@ const addNewTableRow = () => {
 }
 
 class group {
-    constructor(number, registDate, title, contents, finDate, order, motherNumber){
+    constructor(number, registDate, title, contents, finDate, order, motherNumber, level){
         this.number = number;
         this.registDate = registDate;
         this.title = title;
@@ -72,6 +83,7 @@ class group {
         this.contents = contents;
         this.order = order;
         this.motherNumber = motherNumber;
+        this.level = level;
     }
 }
 
@@ -113,7 +125,8 @@ const saveTableItem = () => {
         const finDate = $($($(tr.children(".finDate"))).children()).val();
         const order = lastOrder++;
         const motherNumber = Math.floor($(tr.children(".number")).text() * 1);
-        const itemGroup = new group(number, registDate, title, contents, finDate, order, motherNumber)
+        const level = $(tr.children(".level")).text() * 1;
+        const itemGroup = new group(number, registDate, title, contents, finDate, order, motherNumber, level);
         itemsArray.push(itemGroup)
     }
     sortItemGroups(itemsArray);
@@ -135,12 +148,18 @@ const controlExtensionBtn = (e) => {
 }
 
 const connecttable2Index = (itemsArray) => {
-    const NumberOfItem = $($("tbody").children()).length;
-    console.log("연결")
     $("nav ul").html("");
-    for(let i = 0; i < NumberOfItem; i++){
-        title = itemsArray[i].title;
-        const newItemIndex = $(`<li>${i+1}.${title}<li>`).appendTo($("nav ul"));
+    const orderArray = []
+    for(let i = 0;  i < itemsArray.length; i++){
+        orderArray.push(itemsArray[i])
+    }
+    orderArray.sort((a,b) => {
+        return a.number - b.number
+    })
+    for(let i = 0; i < orderArray.length; i++){
+        title = orderArray[i].title;
+        number = orderArray[i].number;
+        const newItemIndex = $(`<li>${number}.${title}<li>`).appendTo($("nav ul"));
     }
 }
 
@@ -158,7 +177,7 @@ const checkChange = (e) => {
 const renderTableAgain = (trGroup) =>{
     $("tbody").html("");
     for(let i = 0; i < trGroup.length; i++){
-        addTableRow(trGroup[i].number, trGroup[i].registDate, trGroup[i].title, trGroup[i].contents, trGroup[i].finDate, trGroup[i].motherNumber)
+        addTableRow(trGroup[i].number, trGroup[i].registDate, trGroup[i].title, trGroup[i].contents, trGroup[i].finDate, trGroup[i].motherNumber, trGroup[i].level)
     }
     $(".extensionBtn").off()
     $("tbody").off()
@@ -178,7 +197,10 @@ const removeTableItem = (e) => {
     ///
     const allLines = $("tbody").children();
     for(let i = allLines.length - 1 ; i > -1; i--){
-        console.log($(allLines[i]).children(".number").text(allLines.length - i))
+        console.log(allLines[i]);
+        console.log(i)
+        $(allLines[i]).children(".number").text(allLines.length - i)
+        // console.log($(allLines[i]).children(".number").text(allLines.length - i))//이게 왜 되는것인지?
     }
     //
     saveTableItem();
@@ -186,11 +208,10 @@ const removeTableItem = (e) => {
 
 const reCallData = () => {
     const data = JSON.parse(localStorage.getItem("first"))
-    console.log(data);
     if(data){
         for(let i = 0; i < data.length; i++){
             itemsArray.push(data[i]);
-            addTableRow(data[i].number, data[i].registDate, data[i].title, data[i].contents, data[i].finDate, data[i].motherNumber)
+            addTableRow(data[i].number, data[i].registDate, data[i].title, data[i].contents, data[i].finDate, data[i].motherNumber, data[i].level)
         }
         $(".extensionBtn").click((e) => {controlExtensionBtn(e)});
         $("tbody").keyup((e)=>{checkChange(e);})
@@ -203,11 +224,10 @@ const reCallData = () => {
 
 
 const makeSubItem = (e) => {
-    const targetTR = $(e.currentTarget).parents("tr")
-    const motherNumber = $(targetTR.children(`.number`)).text();
-    const motherOrder = targetTR.index()
+    const matherTR = $(e.currentTarget).parents("tr")
+    const motherNumber = $(matherTR.children(`.number`)).text();
+    const motherOrder = matherTR.index()
     let sibling = 0;
-    let mydd;
     for(let i = 0; i < itemsArray.length; i++){
         if(itemsArray[i].motherNumber == motherNumber){
             ElderBro = itemsArray[i].order
@@ -220,7 +240,12 @@ const makeSubItem = (e) => {
     }}
     myNumber = motherNumber * 1 + ((sibling) * 0.1);
     myOrder = ElderBro * 1 + 0.1;
-    const item = new group(myNumber, "","","","",myOrder, motherNumber);
+    const motherLevel = $(matherTR.children(".level")).text();
+    let myLevel;
+    if(motherLevel === "null"){
+        myLevel = 1;
+    } else myLevel = motherOrder + 1;
+    const item = new group(myNumber, "","","","",myOrder, motherNumber, myLevel);
     console.log(itemsArray);
     itemsArray.push(item)
     sortItemGroups(itemsArray)
