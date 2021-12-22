@@ -76,15 +76,19 @@ tr{
 }
 
 .firstLevel {
-    background-color: rgba(128, 128, 128, 1);
+    background-color: rgb(136, 218, 82);
 }
 
 .secondLevel {
-    background-color: rgba(128, 128, 128, 0.8);
+    background-color: rgba(136, 218, 82, 0.7);
 }
 
 .thirdLevel{
-    background-color: rgba(128, 128, 128, 0.5);;
+    background-color: rgba(136, 218, 82, 0.4);;
+}
+
+.firthLevel{
+    background-color: rgba(136, 218, 82, 0.2);;
 }
 
 th:nth-child(1){

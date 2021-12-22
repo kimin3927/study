@@ -29,15 +29,17 @@ const tableRowAddBtn =
 
 const addTableRow = (number, registDate, title, contents, finDate, motherNumber, level) => {
     let levelClass ="";
+    let levell = level+""
     const matchObject = {
         "null" : "firstLevel",
+        "undefined" : "firstLevel",
         "NaN" : "firstLevel",
         "1" : "secondLevel",
         "2" : "thirdLevel",
         "3" : "forthLevel",
         "4" : "fifthLevel",
     }
-    levelClass = matchObject[level];
+    levelClass = matchObject[levell];
     $(`
     <tr class='${levelClass}'>
         <td class='level' style='display:none';>${level}</td>
@@ -118,13 +120,16 @@ const saveTableItem = () => {
     itemsArray = [];
     for(i of TRArray){
         const tr = $(i);
-        const number = $(tr.children(".number")).text() * 1;
+        const number = $(tr.children(".number")).text();
         const registDate = $(tr.children(".registDate")).text();
         const title = $($($(tr.children(".content")).children(".contentWrapper")).children(".title")).children().val();
         const contents = $($($(tr.children(".content")).children(".contentWrapper")).children(".contents")).children().val();
         const finDate = $($($(tr.children(".finDate"))).children()).val();
         const order = lastOrder++;
-        const motherNumber = Math.floor($(tr.children(".number")).text() * 1);
+        let motherNumber = "";
+        if(/\./.test(number)){
+            motherNumber = /.+\./.exec(number)[0].slice(0, -1);
+        }
         const level = $(tr.children(".level")).text() * 1;
         const itemGroup = new group(number, registDate, title, contents, finDate, order, motherNumber, level);
         itemsArray.push(itemGroup)
@@ -194,15 +199,11 @@ const renderTableAgain = (trGroup) =>{
 const removeTableItem = (e) => {
     const targetTR = $(e.currentTarget).parents("tr");
     $(targetTR).remove();
-    ///
     const allLines = $("tbody").children();
     for(let i = allLines.length - 1 ; i > -1; i--){
-        console.log(allLines[i]);
-        console.log(i)
-        $(allLines[i]).children(".number").text(allLines.length - i)
-        // console.log($(allLines[i]).children(".number").text(allLines.length - i))//이게 왜 되는것인지?
+        // $(allLines[i]).children(".number").text(allLines.length - i)
+        console.log($(allLines[i]).children(".number").text(allLines.length - i))//이게 왜 되는것인지?
     }
-    //
     saveTableItem();
 }
 
@@ -224,13 +225,18 @@ const reCallData = () => {
 
 
 const makeSubItem = (e) => {
-    const matherTR = $(e.currentTarget).parents("tr")
-    const motherNumber = $(matherTR.children(`.number`)).text();
-    const motherOrder = matherTR.index()
-    let sibling = 0;
+    const motherTR = $(e.currentTarget).parents("tr")
+    const motherNumber = $(motherTR.children(`.number`)).text() * 1;
+    let motherLevel = $(motherTR.children(".level")).text() + "";
+    if(motherLevel == "null" || motherLevel == "undefined" || motherLevel == "NaN"){
+        motherLevel = 0;
+    }
+    const myLevel = motherLevel * 1 + 1;
+    let sibling = 1;
+    let elderBro;
     for(let i = 0; i < itemsArray.length; i++){
         if(itemsArray[i].motherNumber == motherNumber){
-            ElderBro = itemsArray[i].order
+            elderBro = itemsArray[i].order
             break;
         }
     }
@@ -238,15 +244,14 @@ const makeSubItem = (e) => {
         if(itemsArray[i].motherNumber == motherNumber){
         sibling++
     }}
-    myNumber = motherNumber * 1 + ((sibling) * 0.1);
-    myOrder = ElderBro * 1 + 0.1;
-    const motherLevel = $(matherTR.children(".level")).text();
-    let myLevel;
-    if(motherLevel === "null"){
-        myLevel = 1;
-    } else myLevel = motherOrder + 1;
-    const item = new group(myNumber, "","","","",myOrder, motherNumber, myLevel);
-    console.log(itemsArray);
+    console.log(`motherNumber = ${motherNumber}`)
+    console.log(`myLevel=${myLevel}`)
+    console.log(`sibling=${sibling}`)
+    console.log(sibling)
+    myNumber = motherNumber + "." + sibling;
+    console.log(`mynumber = ${myNumber}`)
+    myOrder = elderBro * 1 + 0.1;
+    const item = new group(myNumber, ClockSet(),"","","",myOrder, motherNumber, myLevel);
     itemsArray.push(item)
     sortItemGroups(itemsArray)
     renderTableAgain(itemsArray);

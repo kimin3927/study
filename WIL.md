@@ -2849,6 +2849,10 @@ animation 속성은 애니메이션에 이름을 지정하거나 지속시간, �
 
 "vue는 컴포넌트기반으로 SPA를 구축하게해주는 프레임워크"
 
+
+
+
+
 컴포넌트 : 메뉴, 로고, 모달창 등의 UI요소를 재사용 가능하도록 구조화한 것
 
 SPA : 필요한 영역만 로딩되는 형태, 빠른 페이지 변환, 적은 트래픽 양이라는 장점
@@ -2901,20 +2905,25 @@ Header디자인을 위해 부트스트랩뷰에서 설치 : npm install bootstra
   </script>
   ```
   
+  - data binding은 나중에 변경시켜야 할 가변적인 데이터를 관리하기에 hardCoding보다 유리하다.
+  - data binding 문법은 자바스크립트에 비해 데이터의 변경과정이 간단하기에.. 유용하다. (자바스크립트는 innerText() 등의 함수가 필요하지만, vue는 데이터 갱신이 default)
+  - 변경될일이 없다면, hardCoding.
+  
 - refs
 
 - 라이프사이클 이해가 중요(향후) : 약간 onload같은 느낌
 
 - 속성
 
-  |          |                            |      |
-  | -------- | -------------------------- | ---- |
-  | computed |                            |      |
-  | watch    |                            |      |
-  | data     |                            |      |
-  | props    | 외부에서 변수를 받는 거임. |      |
-  | methods  |                            |      |
-  |          |                            |      |
+  |           |                            |      |
+  | --------- | -------------------------- | ---- |
+  | computed  |                            |      |
+  | watch     |                            |      |
+  | data      |                            |      |
+  | props     | 외부에서 변수를 받는 거임. |      |
+  | methods   |                            |      |
+  | name      |                            |      |
+  | component |                            |      |
 
   
 
@@ -2922,16 +2931,28 @@ Header디자인을 위해 부트스트랩뷰에서 설치 : npm install bootstra
 
   |         | 기능                    | 약어 | 문법/비고                                                    |
   | ------- | ----------------------- | ---- | ------------------------------------------------------------ |
-  | v-bind: | 변수 바인딩             | :    | <span v-bind:title="message">                                |
+  | v-bind: | (속성용)변수 바인딩     | :    | <span v-bind:title="message">                                |
   | v-if    | (조건문) 제거 또는 삽입 |      |                                                              |
-  | v-for   | 배열데이터 바인딩       |      | <li v-for="todo in todos"><br/>      {{ todo.text }}<br/>    </li> |
+  | v-for   | 배열데이터 바인딩       |      | <li v-for="todo in todos" :key=""><br/>      {{ todo.text }}<br/>    </li> |
   | v-on:   | 이벤트 핸들러           | @    | v-on:이벤트="함수명"<br />* .prevent를 붙여서 preventDefault를 수식가능 |
   | v-model | 변수 양방향 바인딩      |      |                                                              |
   | v-once  | 데이터 데이트 불가      |      |                                                              |
   | v-html  | 실제 html출력           |      |                                                              |
   | v-text  |                         |      |                                                              |
 
+  - v-for 
   
+    <a v-for="(a,i) in menuitems" :key="i"> {{a}} </a
+  
+     변수는 2개로 적을 수 있는데 i는 생략이 가능하다(a,i 부분)
+  
+    좌변은 해당 array의 각 변수, 우변은 index이다.(1씩 증가하는)
+  
+    중괄호에 i 를 넣으면 0 ~ array.length의 index 들이 찍힌다. 
+  
+    key의 역할은 "나중에 알아볼것" //인데 필요하든 안하든 무조건 적어주는게 문법이고 미기재하면 에러가 난다. 
+  
+    
 
 
 
