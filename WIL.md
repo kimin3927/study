@@ -75,7 +75,14 @@
 |  69  |  11/13   | CSS: transform                                           |           |
 |  70  |  11/14   | CSS: transition                                          |           |
 |  71  |  11/21   | 좌표 값 찾기                                             |           |
-|  72  |          |                                                          |           |
+|  72  |   12/1   | 날씨어플 만들기                                          |           |
+|  73  |   12/5   | todo manager만들기                                       |           |
+|  74  |  12/10   | vue.js                                                   |           |
+|  75  |  12/20   | .find() 메서드                                           |           |
+|  76  |  12/21   | 즉시실행함수                                             |           |
+|  77  |          |                                                          |           |
+|  78  |          |                                                          |           |
+|  79  |          |                                                          |           |
 
 
 
@@ -193,11 +200,19 @@ data 속성용 : dataset
 
    
 
-## 4. innerText, innerHTML, textContent 이슈
+## 4. innerText, innerHTML, textContent  등등 비교
 
 
 
 1. 자바스크립트
+
+   DOM.textContent = str
+
+   DOM.innerHTML = str
+
+   DOM.innerText = str
+
+   
 
 2. Jquery
 
@@ -1379,7 +1394,7 @@ transition 속성과 animation 속성의 가장 큰 차이는 transition 속성�
    예
    ```
 
-3. Object.values(해당 객체)
+4. Object.values(해당 객체)
 
    -> 해당 객체가 보유한 전체 키&밸류 세트들을 배열로 반환한다. 
 
@@ -1389,7 +1404,7 @@ transition 속성과 animation 속성의 가장 큰 차이는 transition 속성�
 
    
 
-4. Object.assign()
+5. Object.assign()
 
    -> 해당 객체가 보유한 전체 키&밸류 세트들을 배열로 반환한다. 
 
@@ -1397,17 +1412,7 @@ transition 속성과 animation 속성의 가장 큰 차이는 transition 속성�
    예
    ```
 
-5. Object.hasOwnProperty
-
-   -> 해당 객체가 보유한 전체 키&밸류 세트들을 배열로 반환한다. 
-
-   ```
-   예
-   ```
-
-   
-
-6. Object.create
+6. Object.hasOwnProperty
 
    -> 해당 객체가 보유한 전체 키&밸류 세트들을 배열로 반환한다. 
 
@@ -1416,6 +1421,45 @@ transition 속성과 animation 속성의 가장 큰 차이는 transition 속성�
    ```
 
    
+
+7. Object.create
+
+   -> 해당 객체가 보유한 전체 키&밸류 세트들을 배열로 반환한다. 
+
+   ```
+   예
+   ```
+
+8. Object.defineProperty()
+
+   대상 객체에서 새로운 동작을 정의한다. 
+
+```
+    var viewModel = {};
+
+    (function() {
+      function init() {
+        Object.defineProperty(viewModel, 'str', {
+          // 속성에 접근했을 때의 동작을 정의
+          get: function() {
+            console.log('접근');
+          },
+          // 속성에 값을 할당했을 때의 동작을 정의
+          set: function(newValue) {
+            console.log('할당', newValue);
+            render(newValue);
+          }
+        });
+      }
+      
+      
+    //  viewModel이라는 객체에서 str이라는 속성에 'get'과 'set'이라는 기능을 부여한 것.(prototype과 같은것일까?)
+    	viewModel.str // get 실행
+    	viewModel.str = "" // set 실행
+    // view 배우는 과정에서 view의 reactivity를 보여준 예시 
+```
+
+
 
 ## 31. CSS[ Flex](https://studiomeal.com/archives/197)
 
@@ -2843,17 +2887,70 @@ animation 속성은 애니메이션에 이름을 지정하거나 지속시간, �
 
 1. 드래그 드롭
 
-## 74.Vue.js
+## 74. Vue.js
 
 
 
 "vue는 컴포넌트기반으로 SPA를 구축하게해주는 프레임워크"
 
+"MVVM 패턴의 뷰모델 레이어에 해다아는 화면(View)단의 라이브러리이다. "
 
 
 
+- vue 특징
 
-컴포넌트 : 메뉴, 로고, 모달창 등의 UI요소를 재사용 가능하도록 구조화한 것
+  - MVVM패턴
+
+    1. DOM > coreJavascript 방향 
+
+       DOM(HTML, 사용자의 view, 화면) 에서, vue는 eventListener로서의 역할을 하게 된다.
+
+       받은 이벤트는 javascript로 보내주게 된다.
+
+    2. coreJavascript  > DOM 방향 
+
+       자바스크립트에서 data가 변경된 내용은, vue가 data Bindings를 통해서 DOM으로 전달하게 된다.
+
+  - Reactivity 특성
+
+    기존 자바스크립트는 정의하고, 적용하고 2단계로 구성
+
+    vue는 함수화(?)되어 있어서 변수는 연결되어 있고, 변수의 정의 == 변수의 반영으로 되어있음
+
+  
+
+- vue instance
+
+  new Vue({
+
+    el:  " #app"   // #app 요소에 vue instance를 붙인다는 의미이고, 이로 인해  Vue instance에서 지정된 data, methods 등이 #app이하에서도 적용이 된다는 것.
+
+  }) // 하나의 vue instance는 하나의 root component로 생성이 된다.
+
+- 컴포넌트 : 메뉴, 로고, 모달창 등의 UI요소를 재사용 가능하도록 구조화한 것 // 재사용성++ 
+
+  컴포넌트 등록 문법: 
+
+  ```
+  1. 컴포넌트 우선 등록 시
+  Vue.component('app-header', {
+        template: '<h1>Header</h1>'
+  });  
+  
+  2. vue instance에 변수로 넣어서 만들 시
+  
+  new Vue({
+  	el: #app,
+  	components:{
+  		'이름': {
+  			teplate : ``
+  		}
+  	}
+  })
+  
+  ```
+
+  
 
 SPA : 필요한 영역만 로딩되는 형태, 빠른 페이지 변환, 적은 트래픽 양이라는 장점
 
@@ -2913,26 +3010,282 @@ Header디자인을 위해 부트스트랩뷰에서 설치 : npm install bootstra
 
 - 라이프사이클 이해가 중요(향후) : 약간 onload같은 느낌
 
-- 속성
+- vue 속성(옵션?, api?)
 
-  |           |                            |      |
-  | --------- | -------------------------- | ---- |
-  | computed  |                            |      |
-  | watch     |                            |      |
-  | data      |                            |      |
-  | props     | 외부에서 변수를 받는 거임. |      |
-  | methods   |                            |      |
-  | name      |                            |      |
-  | component |                            |      |
+  | 속성      | 설명                                                         |
+  | --------- | ------------------------------------------------------------ |
+  | el        | 인스턴스가 그려지는 화면의 시작점 (특정 HTML 태그)           |
+  | template  | 화면에 표시할 요소 (HTML, CSS 등)                            |
+  | data      | 뷰의 반응성(Reactivity)이 반영된 데이터 속성                 |
+  | props     | 외부에서 변수를 받는 거임.                                   |
+  | methods   | 화면의 동작과 이벤트 로직을 제어하는 메서드                  |
+  | name      | 컴포넌트를 export할 때 component name을 정의                 |
+  | component |                                                              |
+  | computed  | data에 연계돼서 특정관계성에 의해 조작돼야할 또 다른 data가 필요할 때, |
+  | watch     | data에서 정의한 속성이 변화했을 때 추가 동작을 수행할 수 있게 정의하는 속성<br />데이터 변화 자체가 trigger가 되는 methods를 정의할 경우 |
+  | created   | 뷰의 라이프 사이클과 관련된 속성                             |
+  | router    | new VueRouter를 등록하는 속성                                |
 
-  
+  - 컴포넌트 : 
+
+    1. 구분
+
+       전역컴포넌트 : Vue.component('컴포넌트명'. {컴포넌트내용})
+
+       지역컴포넌트 : new Vue 내부에, 
+
+       components :{
+
+       ​	'컴포넌트명' : {
+
+       ​		컴포넌트 내용
+
+       ​	}
+
+       }
+
+    2. 컴포넌트간의 커뮤니케이션 
+
+    - 컴포넌트간에 데이터 이동이 복잡해지면 관리가 어려움
+
+    - 이를 위해 컴포넌트간의 데이터 통신규칙이 정해졌고, 이는 아래와 같다. 
+
+      1. 상위 컴포넌트에서 하위 컴포넌트로 데이터를 전달한다.(Props)
+
+      2. 하위 컴포넌트에서 상위 컴포넌트로는 이벤트가 올라간다. ($emit 이벤트)
+
+    3. 컴포넌트 네이밍 컨벤션 종류
+       1. 케밥케이스 표기법, vue.js 공식 스타일 가이드 상의 표기법이라고 함(확인해보기)
+       2. 파스칼케이스 표기법
+       3. 파스칼케이스 표기 + self-closing
+
+  - Props
+
+    Props는 상위 컴포넌트의 data를 하위 컴포넌트에서 활용할 수 있게 하는 데이터 전달 방식이다. 방법은 아래와 같다. 
+
+    ```
+    <div id="app">
+    	<app-header></app-header>
+    </div>
+    
+    
+    const appHeader = {
+    	template: '<h1>헤딩</h1>'
+    }
+    
+    new Vue({
+    	el : '#app',
+    	components : {
+    		'app-header' : appHeader
+    	}
+    	data : {
+    		message: 'hi'
+    	}
+    })
+    
+    
+    ```
+
+    위 상황에서, new Vue로 시작되는 Root component의 data, message를 하위 component appHeader로 넘기기 위해서는
+
+    1. 하위 컴포넌트에는 Props 속성 및 props data명을 추가한다.
+
+    2. app-header 태그에서 Pros속성을 bind하고, 상위 컴포넌트에서의 data명을 병기한다.
+
+       ```
+       <div id="app">
+       	<app-header :prosData='message'></app-header>
+       </div>
+       
+       const appHeader = {
+       	template: '<h1>헤딩</h1>',
+       	props: ['propsdata']
+       }
+       
+       ```
+
+       =  상위데이터인 message는 app-header태그에 V-bind로 데이터를 공유할 수 있으며
+       하위 컴포넌트에서는 props 속성을 활용하여 상위 데이터를 하위 컴포넌트에서 활용가능하게 한다.
+       하위 컴포넌트의 템플릿에서는 'propsdata'를 해당 'props data명'으로 활용이 된다. 
+
+  - computed
+
+    data에 연계돼서 특정관계성에 의해 조작된 또 다른 data를 관리해야할 때 씀
+
+    문법 : 
+
+    ```
+      computed: {
+        kimin2(){
+          return this.kimin * 3
+        }
+      },
+    ```
+
+    * 특이사항 : 
+      1. 함수형태여야 한다.
+      2. return 이 있어야 한다. 
+
+  - watch
+
+    data의 변화 자체를 trigger로 삼는 함수를 정의할 경우에 쓰이는 디렉토리
+
+    data와 연계되기 때문에 watch의 함수명은 항상 data에 존재하는 data명과 동일할 것임을 추측함
+
+    - 문법
+
+    ```
+      <script>
+        new Vue({
+          el: '#app',
+          data: {
+            num: 10
+          },
+          watch: {
+            num: function() {
+              this.logText();
+            }
+          },
+          methods: {
+            addNum: function() {
+              this.num = this.num + 1;
+            },
+            logText: function() {
+              console.log('changed');
+            }
+          }
+        })
+      </script>
+    ```
+
+    - watch와 computed의 차이점
+
+      보통은 computed로 해결하면 되고 일부 watch가 필요한 특수상황에서 watch를 사용하자. 
+
+      (computed는 해당 함수 1개로 해결)(watch는 watch 해당함수 1개, 관련 method 1개 총 2개 필요)
+
+    
+
+    
+
+    - $emit
+
+    $emit이라는 api가 있는데. 
+
+    하위 component takeEvent라는 method가 있을 때, 해당 method에서 emit api를 실행한 다는 상황에서,
+
+    ```
+    <div id="app">
+    	<app-header></app-header>
+    </div> 
+    
+    const appHeader = {
+    	template: `<button @click='takeEvent'>click!!!</button>`,
+    	methods:{
+    		takeEvent : function() {
+    			this.emit("pass")
+    		}
+    	}
+    }
+    (new Vue 부분 생략)
+    ```
+
+    하위 컴포넌트에서 받은 'click'이벤트가 emit을 통해 상위컴포넌트에서 pass라는 이벤트로 공유받게 되고, pass 이벤트에 따른 상호작용을 위해 상위 컴포넌트가 이를 활용하는 method 'logText'를 등록하게 되면 아래와 같은 모양이 된다. 
+
+    ```
+    <div id="app">
+    	<app-header @pass='logText'></app-header>
+    </div> 
+    (appHeader 생략)
+    
+    new Vue({
+    	el: '#app',
+    	components: {
+    		'app-header' : appHeader
+    	},
+    	methods:{
+    		logText = function(){
+    			console.log("패스확인")
+    		}
+    	}
+    })
+    ```
+
+    결론적으로 클릭에 의해 vue 개발자도구에 emit이벤트 'pass' '패스확인' 로그를 콘솔에서 확인할 수있는데, 
+
+    이는 emit API로 인해 하위 컴포넌트 appHeader에서 발생한 click이벤트가 상위 컴포넌트에서 인지되게 되었음의 결과이다.
+
+- 같은레벨에서의 컴포넌트 통신
+  1. 기본원리 : 상위 컴포넌트로 event를 올리고 props속성으로 하위 컴포넌트로 내리는 2단계로 통신
+  2. 보조개념 : emit, props,
+
+​	1. emit을 통해 하위컴포넌트의 이벤트트리거가 상위 컴포넌트 이벤트로 전달될 수 있도록 하게 하는데, 이때, 
+
+	2. this.$emit("event  Name", "전달변수") 이벤트만 올릴때와는 달리 데이터를 2번째 인자로 해서  emit을 실행한다. 
+	2. 이렇게 하고 상위 컴포넌트에서는 @event Name='Event Name(전달변수)'라는구문을 통해 emit의 2번째 인자로 전달받은 data를 암묵적으로 접수한다.
+	2. 상위 컴포넌트에서의 method Event Name(전달변수)을 정의할 때, 해당 변수의 handler를 등록하고,
+	2. 마찬가지로 상위 컴포넌트에서의 data에서도 해당 변수를 등록하면 된다. 
+	2. 또 다른 컴포넌트로 다시 props를 활용하여 data를 내린다. 
+
+- router 
+
+  new VueRouter로 생성되는 객체, VueRouter 라이브러리 별도 설치후에 생성이 가능함
+
+  생성객체의 구성 속성은 아래와 같다. 
+
+  1. routes (페이지별 라우팅 정보)
+
+     여러개의 페이지정보를 배열정보로 담아내며, 각 페이지 정보는 객체로 정의됨, 객체별 구성정보는 'url', 'component'
+
+     routes: [
+
+     ​	{
+
+     ​	path: '/login',  // 링크
+
+     ​	component: 'loginComponent' // 불러올 컴포넌트
+
+     ​	name: 'login' // vue 개발자도구에서 표현될 컴포넌트 이름
+
+     },
+
+     ​	{}
+
+     ]
+
+  2. mode 
+
+     선택사항이며 mode : history 라고 추가시키면 url에서 #가 빠지는 모습으로 보이게 됨
+
+  - routes의 사용
+
+    - 상위 component에서 routes에 따라 페이지 컴포넌트를 불러들이는 방법은, 
+
+      상위 component에서 <router-view></router-view>를 추가하면 됨
+
+      <router-view>태그는 url 입력에 따른 해당 component를 불러오는 태그임.
+
+    - <router-link>태그
+
+      router-view component를 통해 페이지 이동을 하기 위해 직접 url을 입력하며 새 페이지를 불러올 수 있지만,
+
+      클릭을 통해 url을 바꿀 수 있는 <a>태그가 있고 view에서 더 간단한 역할을 제공하는것이 <router-link>태그이다. 
+
+      <router-link>는 VueRouter 라이브러리를 통해 브라우저에서는 <a>태그로 변환되는데, a태그와는 달리 페이지 이동이 아닌 싱글페이지어플리케이션 형태의 페이지 전환을 구현하게 해준다.
+
+      링크는 to="" 속성에 적으면 되고, <a>태그의 href=""와 같은 역할이다. 
+
+  - 추가적으로 공부해 볼 부분
+
+    1. router navigation guard
+    2. 인증
 
 - 디렉티브 :디렉티브는 `v-` 접두사가 있는 특수 속성입니다. 디렉티브 속성 값은 **단일 JavaScript 표현식** 이 됩니다. (나중에 설명할 `v-for`는 예외입니다.) 디렉티브의 역할은 표현식의 값이 변경될 때 사이드이펙트를 반응적으로 DOM에 적용하는 것 입니다. 
 
   |         | 기능                    | 약어 | 문법/비고                                                    |
   | ------- | ----------------------- | ---- | ------------------------------------------------------------ |
-  | v-bind: | (속성용)변수 바인딩     | :    | <span v-bind:title="message">                                |
-  | v-if    | (조건문) 제거 또는 삽입 |      |                                                              |
+  | v-bind  | (속성용)변수 바인딩     | :    | <span v-bind:title="message">                                |
+  | v-if    | (조건문) 제거 또는 삽입 |      | <span v-if='status'> // status는  boolean으로..              |
   | v-for   | 배열데이터 바인딩       |      | <li v-for="todo in todos" :key=""><br/>      {{ todo.text }}<br/>    </li> |
   | v-on:   | 이벤트 핸들러           | @    | v-on:이벤트="함수명"<br />* .prevent를 붙여서 preventDefault를 수식가능 |
   | v-model | 변수 양방향 바인딩      |      |                                                              |
@@ -2940,29 +3293,81 @@ Header디자인을 위해 부트스트랩뷰에서 설치 : npm install bootstra
   | v-html  | 실제 html출력           |      |                                                              |
   | v-text  |                         |      |                                                              |
 
+  - v-bind
+
+    <. p :class={ cName : isError } >  </ p >
+
+    
+
+    v-bind의 문법중 하나는 중괄호로 bind값을 입력했을때, 우항이 true일때 좌항이 해당 속성값이 유효하다. 라는 문법이 있음
+
+    
+
+    
+
+    
+    
   - v-for 
-  
+
     <a v-for="(a,i) in menuitems" :key="i"> {{a}} </a
-  
+
      변수는 2개로 적을 수 있는데 i는 생략이 가능하다(a,i 부분)
-  
+
     좌변은 해당 array의 각 변수, 우변은 index이다.(1씩 증가하는)
-  
+
     중괄호에 i 를 넣으면 0 ~ array.length의 index 들이 찍힌다. 
-  
+
     key의 역할은 "나중에 알아볼것" //인데 필요하든 안하든 무조건 적어주는게 문법이고 미기재하면 에러가 난다. 
-  
+
     
 
 
 
 
 
-## 75.
+## 75.Jquery: find() 메서드
 
-## 76.
+find 메서드를 이번에 처음 알게 됐는데, 
 
-## 77.
+children의 parent버전이라고 생각하면 될 듯 하다.
+
+children이 직속 자식 레벨만 검색이 된다면 find는 최하우까지 자식 요소를 탐색할 수 있다. 
+
+번거롭게 children 중첩을 해서 생 난리를 떨었는데 이제라도 알게돼서 다행이다. 
+
+```
+1. find 사용 전(childern 중첩 )
+const title = $($($(tr.children(".content")).children(".contentWrapper")).children(".title")).children().val();
+
+2. find 사용
+const title = 
+tr.find(".title input").val()
+```
+
+
+
+
+
+## 76. 즉시 실행함수
+
+
+
+"**즉시 실행 함수 표현(IIFE, Immediately Invoked Function Expression)**"
+
+"표현 내부의 변수는 외부로부터의 접근이 불가능하다."
+
+"괄호(`()`, Grouping Operator)로 둘러싸인 익명함수(Anonymous Function)이다. 이는 전역 스코프에 불필요한 변수를 추가해서 오염시키는 것을 방지할 수 있을 뿐 아니라 IIFE 내부안으로 다른 변수들이 접근하는 것을 막을 수 있는 방법이다."
+
+"대부분의 Library들이 이런식으로 구성된 모양"
+
+## 77.box-sizing
+
+1. 기본적으로 요소의 크기는 margin,border, padding을 제외한 content의 크기를 말한다.
+2. 이 때문에 의도치 않은 사이즈 조정이 일어날 수 있기에
+3. box-sizing 속성이 개발되었다.
+4. box-sizing속성의 값
+   - content-box : 초기 값, content 사이즈만 사이즈로 인식 
+   - border-box : border까지 포함한 사이즈가 사이즈인 것으로.
 
 
 
