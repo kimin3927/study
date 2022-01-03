@@ -1742,7 +1742,9 @@ Ajax([에이젝스])
    - .html()과 유사 기능, 단 HTML이 아니라 text만이 대상
    - innerHTML과 innerTEXT사이의 차이와 같은 듯
 
-
+* jquery DOM객체의 태그값을 반환하는 법 : 
+  1. get() 함수 이용
+  2. [0] 붙이기 
 
 ## 45. SVG
 

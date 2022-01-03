@@ -121,6 +121,14 @@ tr{
     background-color: rgba(236, 234, 132, 0.4);;
 }
 
+.finish{
+    background-color: grey;
+}
+
+.finish *{
+    text-decoration: line-through;
+}
+
 th:nth-child(1){
     border-radius: 10px 0 0 10px ;
 }
