@@ -1,4 +1,4 @@
-# WIL(What I learned)
+# 'WIL(What I learned)
 
 
 
@@ -2375,8 +2375,6 @@ items.sort(function(a, b) {
 
 https://nuli.navercorp.com/community/article/1132695
 
-
-
 CSS를 적극적으로 활용하면 이미지 파일을 사용하지 않아도 CSS 만으로도 그림을 그릴 수 있음,
 
 CSS3가 새롭게 등장하면서 border-radius, CSS gradient, box-shadow, CSS transform 과 같이 그리기에 활용 할 수 있는 속성들이 많아져 곡면과 그래디언트, 그림자등을 표현하기가 수월해 지면서 CSS 만으로 그림을 그리는 다양한 시도들이 활발해지기 시작했습니다.
@@ -2600,10 +2598,6 @@ function getDistanceFromLatLonInKm(lat1, lng1, lat2,lng2) { //(1)
     1. div display: flex; 설정
     2. align-items: center; 설정
     3. 단 이 경우엔 내부 중앙정렬 또한 text-align 적용불가. justify-content: sapce around 사용필요
-
-
-
-
 
 ## 66.
 
@@ -3327,18 +3321,43 @@ Header디자인을 위해 부트스트랩뷰에서 설치 : npm install bootstra
 
 
 
-## 75.Jquery: find() 메서드
+## 75. 부모요소 / 자식요소 탐색
 
-find 메서드를 이번에 처음 알게 됐는데, 
+DOM 탐색 문법 정리(ing)
 
-children의 parent버전이라고 생각하면 될 듯 하다.
+- sibling, previousElementSibling, nextSibling, 
 
-children이 직속 자식 레벨만 검색이 된다면 find는 최하우까지 자식 요소를 탐색할 수 있다. 
 
-번거롭게 children 중첩을 해서 생 난리를 떨었는데 이제라도 알게돼서 다행이다. 
+
+1. 자바스크립트
+
+   1. parentElement, parentNode
+
+   2. Element.closest() : 부모요소 찾기용, 선택자 필수
+
+   3. 일반 DOM  탐색 기능 활용(querySelector) : - 자식(~자손)찾기용
+
+      querySelectorAll & getElementBy 도 마찬가지. 
+
+   4. .children : 직속 자식 배열 
+
+   5. childNodes : 직속 자식 '노드' 배열 
+
+2. Jquery
+   1. parent() : 직속 부모 확인
+   2. parents() : 상위요소(부모 ~ 조상까지 전부) 전부
+   3. closest() : 상위요소(부모 ~ 조상까지 전부)중에서, 가장 가까운 부모
+   4. children() : 직속 자식 확인
+   5. find()
+
+​				children의 parents버전이라고 생각하면 될 듯 하다.
+
+​				children이 직속 자식 레벨만 검색이 된다면 find는 최하우까지 자식 요소를 탐색할 수 있다. 
+
+​				번거롭게 children 중첩을 해서 생 난리를 떨었는데 이제라도 알게돼서 다행이다. 
 
 ```
-1. find 사용 전(childern 중첩 )
+1. find 사용 전(children 중첩 )
 const title = $($($(tr.children(".content")).children(".contentWrapper")).children(".title")).children().val();
 
 2. find 사용
@@ -3370,6 +3389,96 @@ tr.find(".title input").val()
 4. box-sizing속성의 값
    - content-box : 초기 값, content 사이즈만 사이즈로 인식 
    - border-box : border까지 포함한 사이즈가 사이즈인 것으로.
+
+## 78. 생소한 태그속성 정리
+
+**a 태그 - target**
+
+링크된 문서를 클릭했을 때 문서가 열릴 위치를 명시합니다.
+
+유효 태그 값 : blank|_self|_parent|_top|
+
+|   속성값    |                             설명                             |
+| :---------: | :----------------------------------------------------------: |
+|   _blank    |      링크된 문서를 새로운 윈도우나 탭(tab)에서 오픈함.       |
+|    _self    | 링크된 문서를 링크가 위치한 현재 프레임에서 오픈함.기본값으로 생략 가능. |
+|   _parent   |     링크된 문서를 현재 프레임의 부모 프레임에서 오픈함.      |
+|    _top     |          링크된 문서를 현재 윈도우 전체에서 오픈함.          |
+| 프레임 이름 |           링크된 문서를 명시된 프레임에서 오픈함.            |
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
