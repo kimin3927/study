@@ -16,6 +16,10 @@ body{
     ;
 }
 
+#kimin span{
+    border: 1px solid purple;
+}
+
 header{
     grid-area: h;
     background-color: rgb(185, 202, 228);
@@ -52,7 +56,7 @@ main{
 }
 
 #tableDiv{
-    height: 65%;
+    height: 100%;
     overflow-x: hidden;
     overflow-y: auto;
 }
@@ -119,6 +123,14 @@ tr{
 
 .fourthLevel > .numberTD > .number {
     background-color: rgba(236, 234, 132, 0.4);;
+}
+
+.finish{
+    background-color: grey;
+}
+
+.finish *{
+    text-decoration: line-through;
 }
 
 th:nth-child(1){

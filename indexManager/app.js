@@ -1,4 +1,9 @@
-
+function getUUID() { // UUID v4 generator in JavaScript (RFC4122 compliant)
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+      var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 3 | 8);
+      return v.toString(16);
+    });
+  }
 
 const originTable = 
 `
@@ -29,11 +34,12 @@ const tableRowAddBtn =
 <button id='tableRowAddBtn'>+</button>
 `;
 
-const addTableRow = (number, registDate, title, contents, finDate, order, motherNumber, level) => {
-    let levelClass ="";
-    let levell = level+""
+
+const paintTableRow = (item) => {
+    let level = String(item.level)
     const matchObject = {
         "null" : "firstLevel",
+        "" : "firstLevel",
         "undefined" : "firstLevel",
         "NaN" : "firstLevel",
         "0" : "firstLevel",
@@ -42,45 +48,52 @@ const addTableRow = (number, registDate, title, contents, finDate, order, mother
         "3" : "fourthLevel",
         "4" : "fifthLevel",
     }
-    levelClass = matchObject[levell];
+    const levelClass = matchObject[level];
     $(`
-    <tr class='${levelClass}'>
+    <tr id='${item.id}' class='${levelClass} ${item.status}'>
         <td class='level' style='display:none';>${level}</td>
-        <td class='motherNumber' style='display:none';>${motherNumber}</td>
-        <td class='numberTD'><div class='number'>${number}</div></td>
-        <td class='registDate'>${registDate}</td>
+        <td class='motherNumber' style='display:none';>${item.motherNumber}</td>
+        <td class='numberTD'><div class='number'>${item.number}</div></td>
+        <td class='registDate'>${item.registDate}</td>
         <td class='content'>
             <div class='contentWrapper'>
                 <div class='title'>
-                    <input value="${title}" >
+                    <input value="${item.title}" >
                 </div>
                 <div class='contents'>
-                    <input value="${contents}">
+                    <input value="${item.contents}">
                 </div>
             </div>
             <div class='extension hoverHidden'>
                 <button class='extensionBtn'>∨</button>
             </div>
         </td>
-        <td class='finDate'><input value=${finDate}></td>
+        <td class='finDate'><input value=${item.finDate}></td>
         <td class='btnManager'><div class='hoverHidden'><button class='finishBtn'>완료</button><button class='remove' style=color:red>삭제</button><button class='makeSub'>추가</button></div></td>
     </tr>
-    `).prependTo($("#tableDiv tbody")); 
+    `).prependTo($("#tableDiv tbody"));
 }
 
 const addNewTableRow = () => {
     let lastNumber;
+    let lastOrder
     if(!itemsArray[0]){
         lastNumber = 0;    
+        lastOrder = 0;
     } else {
         lastNumber = itemsArray[itemsArray.length - 1].number * 1;
+        lastOrder = itemsArray[itemsArray.length - 1].order * 1;
     }
     const registDate = ClockSet();
-    addTableRow(lastNumber+1, registDate,"","","","", "")
+    const item = new Group(lastNumber+1, registDate,"","","",lastOrder + 1,"","","", getUUID())
+    itemsArray.push(item);
+    paintTableRow(item)
+    sortItemGroups(itemsArray)
+    saveTableItem()
 }
 
-class group {
-    constructor(number, registDate, title, contents, finDate, order, motherNumber, level, status){
+class Group {
+    constructor(number, registDate, title, contents, finDate, order, motherNumber, level, status, id){
         this.number = number;
         this.registDate = registDate;
         this.title = title;
@@ -90,6 +103,7 @@ class group {
         this.motherNumber = motherNumber;
         this.level = level;
         this.status = status;
+        this.id = id;
     }
 }
 
@@ -112,6 +126,9 @@ const sortItemGroups = (ItemGrops) => {
     ItemGrops.sort((a,b) => {
         return a["order"] - b["order"];
     })
+    for(let i = 0; i < ItemGrops.length; i++){
+        ItemGrops[i].order = i + 1;
+    }
 }
 
 const findMotherNumber = (tr) => {
@@ -129,40 +146,38 @@ const findMotherNumber = (tr) => {
     return motherNumber;
 }
 
-const saveItem2Localstorage = (rows, lastOrder, targetArray, storageName) => {
+const findObjIndex = (targetTR) => {
+    const id = targetTR[0].id;
+    for(let i = 0; i < itemsArray.length; i++){
+        if(itemsArray[i].id == id){
+            const Index = i;
+            return Index;
+        }
+    }
+}
+
+const saveItem2Localstorage = (rows, targetArray, storageName) => {
     for(let i = rows.length - 1; i > -1; i--) {
         const tr = $(rows[i]);
-        const number = $(tr.find(".number")).text();
-        const registDate = $(tr.children(".registDate")).text();
-        const title = tr.find(".title input").val()
-        const contents = tr.find(".contents input").val()
-        const finDate = tr.find(".finDate input").val()
-        const order = lastOrder++;
-        let level = $(tr.children(".level")).text() * 1;
-        if(!level){
-            level = 0;
+        const objIndex = findObjIndex(tr)
+        const itsObj = targetArray[objIndex]
+        itsObj.level = $(tr.find(".level")).text() * 1;
+        if(!itsObj.level){
+            itsObj.level = 0;
         }
-        const motherNumber = findMotherNumber(tr);
-        let children;
-        const itemGroup = new group(number, registDate, title, contents, finDate, order, motherNumber, level, children);
-        targetArray.push(itemGroup)
+        itsObj.registDate = $(tr.find(".registDate")).text();
+        itsObj.title = $(tr.find(".title input")).val()
+        itsObj.contents = tr.find(".contents input").val()
+        itsObj.finDate = tr.find(".finDate input").val()
+        itsObj.motherNumber = findMotherNumber(tr);
         }
     localStorage.setItem(storageName, JSON.stringify(targetArray))
 }
 
 const saveTableItem = () => { 
-    console.log(itemsArray)
-    const aliveLines = $("#tableDiv tbody").children();
-    let lastOrder;
-    if(!itemsArray[0]){
-        lastOrder = 0;
-    } else {
-        lastOrder = itemsArray[itemsArray.length - 1].order;
-    }
-    itemsArray = [];
+    const aliveLines = $("#tableDiv tbody tr")
+    saveItem2Localstorage(aliveLines, itemsArray, "first")
     sortItemGroups(itemsArray);
-    saveItem2Localstorage(aliveLines, lastOrder, itemsArray, "first")
-    console.log(itemsArray)
     connecttable2Index(itemsArray);
 }
 
@@ -182,8 +197,8 @@ const connecttable2Index = (itemsArray) => {
     $("nav ul").html("");
     const orderArray = []
     for(let i = 0;  i < itemsArray.length; i++){
-        itemsArray[i].navOrder = itemsArray[i].number.replaceAll(".","")
-        length = 5 - itemsArray[i].number.replaceAll(".","").length;
+        itemsArray[i].navOrder = String(itemsArray[i].number).replaceAll(".","")
+        length = 5 - itemsArray[i].navOrder.length;
         multiflier = 10 ** length;
         itemsArray[i].navOrder = itemsArray[i].navOrder * multiflier;
         orderArray.push(itemsArray[i])
@@ -194,7 +209,7 @@ const connecttable2Index = (itemsArray) => {
     const pattern = /........../;
     for(let i = 0; i < orderArray.length; i++){
         let title = orderArray[i].title;
-        let number = orderArray[i].number;
+        let number = String(orderArray[i].number);
         const countDot = number.match(/./g).length - 1; 
         let blank = '&nbsp'
         blank = blank.repeat(countDot)
@@ -219,7 +234,7 @@ const checkChange = (e) => {
 const renderTableAgain = (trGroup) =>{
     $("#tableDiv tbody").html("");
     for(let i = 0; i < trGroup.length; i++){
-        addTableRow(trGroup[i].number, trGroup[i].registDate, trGroup[i].title, trGroup[i].contents, trGroup[i].finDate, trGroup[i].order, trGroup[i].motherNumber, trGroup[i].level)
+        paintTableRow(trGroup[i])
     }
     $(".extensionBtn").off()
     $("#tableDiv tbody").off()
@@ -233,21 +248,26 @@ const renderTableAgain = (trGroup) =>{
     $(`.finishBtn`).click((e) => {finishBtnHandler(e)})
 }
 
-// for(let i = allLines.length - 1 ; i > -1; i--){
-    //     $(allLines[i]).find(".number").text(allLines.length - i)
-    // }
-    //
+const delFinishedLine = () => {
+    if(!$(".finTable tbody tr")[0]){
+        $($("main").children("hr")).remove()
+        $($("main").children(".finTable")).remove()
+    }
+}
 
 const removeTableItem = (e) => {
     const targetTR = $($(e.currentTarget).parents("tr"));
     if(!targetTR.parents("#tableDiv")[0]){
         const targetIndex = targetTR.index()
-        console.log(`targetIndex =${targetIndex}`)
         finishedArray.splice(targetIndex,1)
-        console.log(finishedArray)
         localStorage.setItem("finish", JSON.stringify(finishedArray));
+    } else{
+        const objIndex = findObjIndex(targetTR);
+        itemsArray.splice(objIndex,1);
     }
     targetTR.remove()
+    renderTableAgain(itemsArray)
+    delFinishedLine()
     // const trGroup = $("#tableDiv tbody").children();
     // const numberOfFirstLevel = $("#tableDiv tbody").children(".firstLevel").length;
     // for(let i = trGroup.length; i > -1; i--){
@@ -255,7 +275,6 @@ const removeTableItem = (e) => {
     //         $($(trGroup[i]).find(".number")).text(i);
     //     }
     // }
-    saveTableItem();
 }
 
 const addNewFinishedItem = (item) => {
@@ -301,20 +320,23 @@ const addNewFinishedItem = (item) => {
 
 const finishBtnHandler = (e) => {
     const targetTR = $(e.currentTarget).parents("tr");
-    let objIndex;
     for(let i = 0; i < itemsArray.length; i++){
-        if(itemsArray[i].number == $(targetTR.find(".number")).text()){
+        if(itemsArray[i].id == targetTR[0].id){
             objIndex = i
+            break;
         }
     }
     const targetObj = itemsArray[objIndex]
-    targetObj.status = "finish"
     const itsFirstLevel = $(targetTR).hasClass("firstLevel")
-    console.log(typeof itsnotFirstLevel)
     if(!itsFirstLevel){
-        if(targetTR.css("backgroundColor") !== "rgb(128, 128, 128)"){
-            targetTR.css("backgroundColor", "grey")
-        } else targetTR.css("backgroundColor", "rgba(0,0,0,0)")
+        if(targetObj.status !== "finish") {
+            targetObj.status = "finish"
+            targetTR.addClass("finish");
+        } else {
+            targetObj.status = "";
+            targetTR.removeClass("finish");
+        }
+        saveTableItem();
         return;
     } else {
         $(targetTR).remove();
@@ -338,11 +360,13 @@ const finishBtnHandler = (e) => {
             </div>`)
         }
         finishedArray.push(targetObj)
+        itemsArray.splice(objIndex,1)
         localStorage.setItem("finish", JSON.stringify(finishedArray))
         saveTableItem();
         addNewFinishedItem(targetObj);
     }
 }
+
 
 const reCallData = () => {
     const data = JSON.parse(localStorage.getItem("first"))
@@ -350,7 +374,7 @@ const reCallData = () => {
     if(data){
         for(let i = 0; i < data.length; i++){
             itemsArray.push(data[i]);
-            addTableRow(data[i].number, data[i].registDate, data[i].title, data[i].contents, data[i].finDate, data[i].order, data[i].motherNumber, data[i].level)
+            paintTableRow(data[i])
         }
         $(".extensionBtn").click((e) => {controlExtensionBtn(e)});
         $("#tableDiv tbody").keyup((e)=>{checkChange(e);})
@@ -359,7 +383,7 @@ const reCallData = () => {
         $(`.finishBtn`).click((e) => {finishBtnHandler(e)})
         connecttable2Index(itemsArray);
     }
-    if(finData[0]){
+    if(finData.length !== 0){
         $("main").append(`
         <hr>
         <div class=finTable>
@@ -402,6 +426,7 @@ const makeSubItem = (e) => {
     const myLevel = motherLevel * 1 + 1;
     let sibling = 1;
     let elderBro;
+    let elderBroOrder;
     for(let i = 0; i < itemsArray.length; i++){
         if(itemsArray[i].motherNumber == motherNumber){
             elderBro = itemsArray[i].order
@@ -412,15 +437,19 @@ const makeSubItem = (e) => {
         if(itemsArray[i].motherNumber == motherNumber){
         sibling++
     }}
-    console.log(motherNumber)
     myNumber = motherNumber + "." + sibling;
     let myOrder;
     if(elderBro){
-        myOrder = elderBro * 1 - 0.1;
-    } else myOrder = motherOrder - 0.1;
-    const item = new group(myNumber, ClockSet(),"","","",myOrder, motherNumber, myLevel);
+        myOrder = elderBro * 1 - 0.03;
+    } else {
+        myOrder = motherOrder - 0.01;
+    }
+    console.log(myOrder)
+    const item = new Group(myNumber, ClockSet(),"","","", myOrder, motherNumber, myLevel, "", getUUID());
     console.log(item)
-    itemsArray.splice(motherIndex,0,item)
+    if(elderBro !== undefined){
+        itemsArray.splice(elderBro,0,item)
+    } else itemsArray.splice(motherIndex,0,item)
     console.log(itemsArray)
     sortItemGroups(itemsArray)
     renderTableAgain(itemsArray);
@@ -435,7 +464,6 @@ const showFirstPage = () => {
         $("#tableDiv tbody").off()
         $(".makeSub").off()
         $(".remove").off()
-        saveTableItem()
         $(".extensionBtn").click((e) => {controlExtensionBtn(e)});
         $("#tableDiv tbody").keyup((e)=>{checkChange(e);})
         $(`.makeSub`).click((e) => {makeSubItem(e)})
@@ -449,7 +477,7 @@ showFirstPage()
 reCallData()
 
 
-//test
+
 
 kiminArray = [
     { number : 1,registDate : "kimin", title : "kimin", contents : "kimin", finDate : "kimin", order : "kimin", motherNumber : "kimin", level : "kimin", children : 
