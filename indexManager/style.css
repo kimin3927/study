@@ -52,7 +52,6 @@ main{
     margin: 0.5vw;
     padding: 1vw;
     padding-top: 0;
-    
 }
 
 #tableDiv{
@@ -278,7 +277,7 @@ footer{
 
 
 .hoverHidden{
-    opacity: 1;
+    opacity: 0;
 }
 
 

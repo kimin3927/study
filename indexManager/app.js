@@ -1,3 +1,43 @@
+const myCanvas = document.querySelector("#canvas").getContext('2d')
+myCanvas.fillStyle ='green'
+myCanvas.fillRect(2, 2, 100, 100)
+const myChart = new Chart(myCanvas, {
+    type: 'bar',
+    data: {
+        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+        datasets: [{
+            label: '# of Votes',
+            data: [12, 19, 3, 5, 2, 3],
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+
+console.log(myChart)
+
 function getUUID() { // UUID v4 generator in JavaScript (RFC4122 compliant)
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
       var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 3 | 8);
@@ -319,7 +359,10 @@ const addNewFinishedItem = (item) => {
 }
 
 const finishBtnHandler = (e) => {
+    debugger
     const targetTR = $(e.currentTarget).parents("tr");
+    console.log(targetTR);
+    let objIndex;
     for(let i = 0; i < itemsArray.length; i++){
         if(itemsArray[i].id == targetTR[0].id){
             objIndex = i
