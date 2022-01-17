@@ -1050,9 +1050,9 @@ SEO 최적화를 위한 가이드 예시
 
 - 디테일한 설명을 뒤로 하고 우선 결론
   
-  - 배열에는 for in을 쓴다.
+  - 배열에는 for of을 쓴다.
   
-  - 객체에는 for of를 쓴다. 다만 for in은 key뿐 아니라 prototype key도 가져올 수 있어서 방어코드를 함께 써야 한다. 
+  - 객체에는 for in를 쓴다. 다만 for in은 key뿐 아니라 prototype key도 가져올 수 있어서 방어코드를 함께 써야 한다. 
     
     ```
     방어코드 예시1) prototype 키가 있는 경우 제외하고 진짜 key만을 활용하여 사용
@@ -2583,37 +2583,37 @@ animation 속성은 애니메이션에 이름을 지정하거나 지속시간, �
 "MVVM 패턴의 뷰모델 레이어에 해다아는 화면(View)단의 라이브러리이다. "
 
 - vue 특징
-  
+
   - MVVM패턴
-    
+
     1. DOM > coreJavascript 방향 
-       
+
        DOM(HTML, 사용자의 view, 화면) 에서, vue는 eventListener로서의 역할을 하게 된다.
-       
+
        받은 이벤트는 javascript로 보내주게 된다.
-    
+
     2. coreJavascript  > DOM 방향 
-       
+
        자바스크립트에서 data가 변경된 내용은, vue가 data Bindings를 통해서 DOM으로 전달하게 된다.
-  
+
   - Reactivity 특성
-    
+
     기존 자바스크립트는 정의하고, 적용하고 2단계로 구성
-    
+
     vue는 함수화(?)되어 있어서 변수는 연결되어 있고, 변수의 정의 == 변수의 반영으로 되어있음
 
 - vue instance
-  
+
   new Vue({
-  
+
     el:  " #app"   // #app 요소에 vue instance를 붙인다는 의미이고, 이로 인해  Vue instance에서 지정된 data, methods 등이 #app이하에서도 적용이 된다는 것.
-  
+
   }) // 하나의 vue instance는 하나의 root component로 생성이 된다.
 
 - 컴포넌트 : 메뉴, 로고, 모달창 등의 UI요소를 재사용 가능하도록 구조화한 것 // 재사용성++ 
-  
+
   컴포넌트 등록 문법: 
-  
+
   ```
   1. 컴포넌트 우선 등록 시
   Vue.component('app-header', {
@@ -2659,7 +2659,7 @@ Header디자인을 위해 부트스트랩뷰에서 설치 : npm install bootstra
 - templete literal : ${}와 비슷하게 변수는 {{}}에 담는다._console.log()수준의 ㅇㅇ..
 
 - 변수선언, 함수선언 하는 법
-  
+
   ```
   {{변수명}}
   
@@ -2677,7 +2677,7 @@ Header디자인을 위해 부트스트랩뷰에서 설치 : npm install bootstra
       }
   </script>
   ```
-  
+
   - data binding은 나중에 변경시켜야 할 가변적인 데이터를 관리하기에 hardCoding보다 유리하다.
   - data binding 문법은 자바스크립트에 비해 데이터의 변경과정이 간단하기에.. 유용하다. (자바스크립트는 innerText() 등의 함수가 필요하지만, vue는 데이터 갱신이 default)
   - 변경될일이 없다면, hardCoding.
@@ -2687,59 +2687,61 @@ Header디자인을 위해 부트스트랩뷰에서 설치 : npm install bootstra
 - 라이프사이클 이해가 중요(향후) : 약간 onload같은 느낌
 
 - vue 속성(옵션?, api?)
-  
-  | 속성        | 설명                                                                                        |
-  | --------- | ----------------------------------------------------------------------------------------- |
-  | el        | 인스턴스가 그려지는 화면의 시작점 (특정 HTML 태그)                                                           |
-  | template  | 화면에 표시할 요소 (HTML, CSS 등)                                                                  |
-  | data      | 뷰의 반응성(Reactivity)이 반영된 데이터 속성                                                            |
-  | props     | 외부에서 변수를 받는 거임.                                                                           |
-  | methods   | 화면의 동작과 이벤트 로직을 제어하는 메서드                                                                  |
-  | name      | 컴포넌트를 export할 때 component name을 정의                                                        |
-  | component |                                                                                           |
-  | computed  | data에 연계돼서 특정관계성에 의해 조작돼야할 또 다른 data가 필요할 때,                                              |
+
+  | 속성      | 설명                                                         |
+  | --------- | ------------------------------------------------------------ |
+  | el        | 인스턴스가 그려지는 화면의 시작점 (특정 HTML 태그)           |
+  | template  | 화면에 표시할 요소 (HTML, CSS 등)                            |
+  | data      | 뷰의 반응성(Reactivity)이 반영된 데이터 속성                 |
+  | props     | 외부에서 변수를 받는 거임.                                   |
+  | methods   | 화면의 동작과 이벤트 로직을 제어하는 메서드                  |
+  | name      | 컴포넌트를 export할 때 component name을 정의                 |
+  | component |                                                              |
+  | computed  | data에 연계돼서 특정관계성에 의해 조작돼야할 또 다른 data가 필요할 때, |
   | watch     | data에서 정의한 속성이 변화했을 때 추가 동작을 수행할 수 있게 정의하는 속성<br />데이터 변화 자체가 trigger가 되는 methods를 정의할 경우 |
-  | created   | 뷰의 라이프 사이클과 관련된 속성                                                                        |
-  | router    | new VueRouter를 등록하는 속성                                                                    |
-  | extends   |                                                                                           |
-  | mixin     | 컴포넌트에 재사용 가능한 기능을 배포하는 유연한 방법                                                             |
-  | plugin    |                                                                                           |
-  
+  | created   | 뷰의 라이프 사이클과 관련된 속성                             |
+  | router    | new VueRouter를 등록하는 속성                                |
+  | extends   |                                                              |
+  | mixin     | 컴포넌트에 재사용 가능한 기능을 배포하는 유연한 방법         |
+  | plugin    |                                                              |
+
   - 컴포넌트 : 
-    
+
     1. 구분
-       
+
        전역컴포넌트 : Vue.component('컴포넌트명'. {컴포넌트내용})
-       
+
        지역컴포넌트 : new Vue 내부에, 
-       
+
        components :{
-       
+
        ​    '컴포넌트명' : {
-       
+
        ​        컴포넌트 내용
-       
+
        ​    }
-       
+
        }
-    
+
     2. 컴포넌트간의 커뮤니케이션 
+
     - 컴포넌트간에 데이터 이동이 복잡해지면 관리가 어려움
-    
+
     - 이를 위해 컴포넌트간의 데이터 통신규칙이 정해졌고, 이는 아래와 같다. 
-      
+
       1. 상위 컴포넌트에서 하위 컴포넌트로 데이터를 전달한다.(Props)
-      
+
       2. 하위 컴포넌트에서 상위 컴포넌트로는 이벤트가 올라간다. ($emit 이벤트)
+
     3. 컴포넌트 네이밍 컨벤션 종류
        1. 케밥케이스 표기법, vue.js 공식 스타일 가이드 상의 표기법이라고 함(확인해보기)
        2. 파스칼케이스 표기법
        3. 파스칼케이스 표기 + self-closing
-  
+
   - Props
-    
+
     Props는 상위 컴포넌트의 data를 하위 컴포넌트에서 활용할 수 있게 하는 데이터 전달 방식이다. 방법은 아래와 같다. 
-    
+
     ```
     <div id="app">
         <app-header></app-header>
@@ -2749,7 +2751,7 @@ Header디자인을 위해 부트스트랩뷰에서 설치 : npm install bootstra
     const appHeader = {
         template: '<h1>헤딩</h1>'
     }
-    
+
     new Vue({
         el : '#app',
         components : {
@@ -2759,10 +2761,9 @@ Header디자인을 위해 부트스트랩뷰에서 설치 : npm install bootstra
             message: 'hi'
         }
     })
-    
-    
+
+
     ```
-    
     위 상황에서, new Vue로 시작되는 Root component의 data, message를 하위 component appHeader로 넘기기 위해서는
     
     1. 하위 컴포넌트에는 Props 속성 및 props data명을 추가한다.
@@ -2770,27 +2771,29 @@ Header디자인을 위해 부트스트랩뷰에서 설치 : npm install bootstra
     2. app-header 태그에서 Pros속성을 bind하고, 상위 컴포넌트에서의 data명을 병기한다.
     
     ```
+
        <div id="app">
            <app-header :prosData='message'></app-header>
        </div>
-    
+
+
        const appHeader = {
            template: '<h1>헤딩</h1>',
            props: ['propsdata']
        }
-    
+
        ```
-    
        =  상위데이터인 message는 app-header태그에 V-bind로 데이터를 공유할 수 있으며
        하위 컴포넌트에서는 props 속성을 활용하여 상위 데이터를 하위 컴포넌트에서 활용가능하게 한다.
        하위 컴포넌트의 템플릿에서는 'propsdata'를 해당 'props data명'으로 활용이 된다. 
+       ```
 
 - computed
-  
+
   data에 연계돼서 특정관계성에 의해 조작된 또 다른 data를 관리해야할 때 씀
-  
+
   문법 : 
-  
+
   ```
     computed: {
       kimin2(){
@@ -2798,17 +2801,19 @@ Header디자인을 위해 부트스트랩뷰에서 설치 : npm install bootstra
       }
     },
   ```
-  
+
   * 특이사항 : 
     1. 함수형태여야 한다.
     2. return 이 있어야 한다. 
+
   - watch
-    
+
     data의 변화 자체를 trigger로 삼는 함수를 정의할 경우에 쓰이는 디렉토리
-    
+
     data와 연계되기 때문에 watch의 함수명은 항상 data에 존재하는 data명과 동일할 것임을 추측함
+
     - 문법
-    
+
     ```
       <script>
         new Vue({
@@ -2832,19 +2837,19 @@ Header디자인을 위해 부트스트랩뷰에서 설치 : npm install bootstra
         })
       </script>
     ```
-    
+
     - watch와 computed의 차이점
-      
+
       보통은 computed로 해결하면 되고 일부 watch가 필요한 특수상황에서 watch를 사용하자. 
-      
+
       (computed는 해당 함수 1개로 해결)(watch는 watch 해당함수 1개, 관련 method 1개 총 2개 필요)
-    
+
   - mixin
-    
+
     복수의 컴포넌트에서 재사용을 요구하는 methods가 있을 때, mixin을 사용한다. 
-    
+
     1. 별도의 js 파일에 해당 method를 작성
-    
+
        ```
        export const dateFormat = {
        	methods: {
@@ -2852,30 +2857,30 @@ Header디자인을 위해 부트스트랩뷰에서 설치 : npm install bootstra
        	}
        }
        ```
-    
+
     2. 사용이 필요한 component에서 import 
-    
+
        ```
        import { dateFormat } from "../mixins/dateFormat"
        ```
-    
+
     3. mixin속성 추가 
-    
+
        ```
        methods: {
        
        },
        mixins: [dateFormat]
        ```
-    
+
        
-    
+
   - extends
-  
+
     mixin : 개별 methods를 다른 component에서 import 
-    
+
     extends: 기존 component에서 정의된 것들을 다른 컴포넌트에서 확장해서 사용가능
-    
+
     ```
     var CompA = { ... }
     
@@ -2885,15 +2890,15 @@ Header디자인을 위해 부트스트랩뷰에서 설치 : npm install bootstra
       ...
     }
     ```
+
     
-    
-    
+
     - $emit
-    
+
     $emit이라는 api가 있는데. 
-    
+
     하위 component takeEvent라는 method가 있을 때, 해당 method에서 emit api를 실행한 다는 상황에서,
-    
+
     ```
     <div id="app">
         <app-header></app-header>
@@ -2909,9 +2914,9 @@ Header디자인을 위해 부트스트랩뷰에서 설치 : npm install bootstra
     }
     (new Vue 부분 생략)
     ```
-    
+
     하위 컴포넌트에서 받은 'click'이벤트가 emit을 통해 상위컴포넌트에서 pass라는 이벤트로 공유받게 되고, pass 이벤트에 따른 상호작용을 위해 상위 컴포넌트가 이를 활용하는 method 'logText'를 등록하게 되면 아래와 같은 모양이 된다. 
-    
+
     ```
     <div id="app">
         <app-header @pass='logText'></app-header>
@@ -2930,12 +2935,13 @@ Header디자인을 위해 부트스트랩뷰에서 설치 : npm install bootstra
         }
     })
     ```
-    
+
     결론적으로 클릭에 의해 vue 개발자도구에 emit이벤트 'pass' '패스확인' 로그를 콘솔에서 확인할 수있는데, 
-    
+
     이는 emit API로 인해 하위 컴포넌트 appHeader에서 발생한 click이벤트가 상위 컴포넌트에서 인지되게 되었음의 결과이다.
-  
+
 - 같은레벨에서의 컴포넌트 통신
+
   1. 기본원리 : 상위 컴포넌트로 event를 올리고 props속성으로 하위 컴포넌트로 내리는 2단계로 통신
   2. 보조개념 : emit, props,
 
@@ -2948,89 +2954,210 @@ Header디자인을 위해 부트스트랩뷰에서 설치 : npm install bootstra
     2. 또 다른 컴포넌트로 다시 props를 활용하여 data를 내린다. 
 
 - router 
-  
+
   new VueRouter로 생성되는 객체, VueRouter 라이브러리 별도 설치후에 생성이 가능함
-  
+
   생성객체의 구성 속성은 아래와 같다. 
-  
+
   1. routes (페이지별 라우팅 정보)
-     
+
      여러개의 페이지정보를 배열정보로 담아내며, 각 페이지 정보는 객체로 정의됨, 객체별 구성정보는 'url', 'component'
-     
+
      routes: [
-     
+
      ​    {
-     
+
      ​    path: '/login',  // 링크
-     
+
      ​    component: 'loginComponent' // 불러올 컴포넌트
-     
+
      ​    name: 'login' // vue 개발자도구에서 표현될 컴포넌트 이름
-     
+
      },
-     
+
      ​    {}
-     
+
      ]
-  
+
   2. mode 
-     
+
      선택사항이며 mode : history 라고 추가시키면 url에서 #가 빠지는 모습으로 보이게 됨
+
   - routes의 사용
-    
+
     - 상위 component에서 routes에 따라 페이지 컴포넌트를 불러들이는 방법은, 
-      
+
       상위 component에서 <router-view></router-view>를 추가하면 됨
-      
+
       <router-view>태그는 url 입력에 따른 해당 component를 불러오는 태그임.
-    
+
     - <router-link>태그
-      
+
       router-view component를 통해 페이지 이동을 하기 위해 직접 url을 입력하며 새 페이지를 불러올 수 있지만,
-      
+
       클릭을 통해 url을 바꿀 수 있는 <a>태그가 있고 view에서 더 간단한 역할을 제공하는것이 <router-link>태그이다. 
-      
+
       <router-link>는 VueRouter 라이브러리를 통해 브라우저에서는 <a>태그로 변환되는데, a태그와는 달리 페이지 이동이 아닌 싱글페이지어플리케이션 형태의 페이지 전환을 구현하게 해준다.
-      
+
       링크는 to="" 속성에 적으면 되고, <a>태그의 href=""와 같은 역할이다. 
-  
+
   - 추가적으로 공부해 볼 부분
-    
+
     1. router navigation guard
     2. 인증
 
 - 디렉티브 :디렉티브는 `v-` 접두사가 있는 특수 속성입니다. 디렉티브 속성 값은 **단일 JavaScript 표현식** 이 됩니다. (나중에 설명할 `v-for`는 예외입니다.) 디렉티브의 역할은 표현식의 값이 변경될 때 사이드이펙트를 반응적으로 DOM에 적용하는 것 입니다. 
-  
-  |          | 기능             | 약어  | 문법/비고                                                                      |
-  | -------- | -------------- | --- | -------------------------------------------------------------------------- |
-  | v-bind   | (속성용)변수 바인딩    | :   | <span v-bind:title="message">                                              |
-  | v-if     | (조건문) 제거 또는 삽입 |     | <span v-if='status'> // status는  boolean으로..                               |
-  | v-for    | 배열데이터 바인딩      |     | <li v-for="todo in todos" :key=""><br/>      {{ todo.text }}<br/>    </li> |
-  | v-on:    | 이벤트 핸들러        | @   | v-on:이벤트="함수명"<br />* .prevent를 붙여서 preventDefault를 수식가능                   |
-  | v-model  | 변수 양방향 바인딩     |     |                                                                            |
-  | v-once   | 데이터 데이트 불가     |     |                                                                            |
-  | v-html   | 실제 html출력      |     |                                                                            |
-  | v-text   |                |     |                                                                            |
-  | v-layout |                |     |                                                                            |
-  | v-flex   |                |     |                                                                            |
-  
+
+  |          | 기능                    | 약어 | 문법/비고                                                    |
+  | -------- | ----------------------- | ---- | ------------------------------------------------------------ |
+  | v-bind   | (속성용)변수 바인딩     | :    | <span v-bind:title="message">                                |
+  | v-if     | (조건문) 제거 또는 삽입 |      | <span v-if='status'> // status는  boolean으로..              |
+  | v-for    | 배열데이터 바인딩       |      | <li v-for="todo in todos" :key=""><br/>      {{ todo.text }}<br/>    </li> |
+  | v-on:    | 이벤트 핸들러           | @    | v-on:이벤트="함수명"<br />* .prevent를 붙여서 preventDefault를 수식가능 |
+  | v-model  | 변수 양방향 바인딩      |      |                                                              |
+  | v-once   | 데이터 데이트 불가      |      |                                                              |
+  | v-html   | 실제 html출력           |      |                                                              |
+  | v-text   |                         |      |                                                              |
+  | v-layout |                         |      |                                                              |
+  | v-flex   |                         |      |                                                              |
+
   - v-bind
-    
+
     <. p :class={ cName : isError } >  </ p >
 
     v-bind의 문법중 하나는 중괄호로 bind값을 입력했을때, 우항이 true일때 좌항이 해당 속성값이 유효하다. 라는 문법이 있음
 
 - v-for 
-  
+
   <a v-for="(a,i) in menuitems" :key="i"> {{a}} </a
-  
+
    변수는 2개로 적을 수 있는데 i는 생략이 가능하다(a,i 부분)
-  
+
   좌변은 해당 array의 각 변수, 우변은 index이다.(1씩 증가하는)
-  
+
   중괄호에 i 를 넣으면 0 ~ array.length의 index 들이 찍힌다. 
-  
+
   key의 역할은 "나중에 알아볼것" //인데 필요하든 안하든 무조건 적어주는게 문법이고 미기재하면 에러가 난다. 
+
+### 1. vuex
+
+> store를 사용하기 위한 library(plugin?)
+> store란 state를 사용하기 위한 객체
+> state란 모든 컴포넌트에서 공통으로 접근가능한 반응성을 가진 data set
+
+- 기초 개념 나열
+
+  - 설치는 npm, cdn, vueui 플러그인 설치 등의 방법 중 택1
+
+  - 기본 세팅 : js 파일에 Store 생성 및 export 
+
+    ```
+    export default new Vuex.Store({
+      state: {
+      },
+      mutations: {
+      },
+      actions: {
+      },
+      modules: {
+        toc,
+      }
+    })
+    ```
+
+  - export된 store는 main.js에서 import & Vue 생성에 추가
+
+    ```
+    import store from './store'
+    
+    Vue.config.productionTip = false
+    
+    new Vue({
+      store,
+      render: h => h(App)
+    }).$mount('#app')
+    ```
+
+  - Store객체는 state, mutation, actions, getters, modules로 구성
+
+    - module : 별개의 Store, 복수의 Store를 구분해서 사용해야할 때 component처럼 store를 분리해서 생성하고, 상위 store에서 import해서 사용하는 개념을 위한 단위
+    - state : vuex의 핵심이라 할 수 있는 data 저장소
+    - mutation : 상태를 변이(조작)시키기 위한 함수 집합(상태 데이터를 바꾸는 트리거)
+    - action : mutation을 일으키기 위한 trigger함수의 집합 (혹시 api연동(통신) 이 필요할 경우엔 여기서)
+    - getters : 
+
+  - store 속성별 상호작용 단계
+
+    1. state 속성 정의(count)
+
+       ```
+       state: () => ({ 
+               count :
+       }),
+       ```
+
+    2. 외부(component)에서 store(state) 접근, data 조작 : 
+
+       1. state조작을 위한 mutation 함수와 actions함수를 정의
+
+          ```
+          mutations: {
+              increase (state, param) { // param을 사용하여 state에 접근, 특정 조작하는 함수 increase를 정의
+              	if(!state.count){
+              		state.count = 1;
+              	}
+                  state.count = state.count + param;
+              }
+          },
+          actions: { 
+              firstAction ({ commit, state }, param) { firstAction이란 함수를 정의,
+                  commit('increment', param); // state에 'increase'라는 commit event를 발생,param을 전달
+                  							(즉, mutaion 함수 increase의 trigger)
+                  							(firstAction의 발동은 component에서 하게 됨)
+              }
+          ```
+
+          ** this.state라고 안하는 걸까?? 
+
+       2. component에서 해당 actions 함수를 수행
+
+          ```
+          methods : {
+          	something(){
+          		this.$store.dispatch("firstAction", 10) // dispatch : component에서 store actions를 일으키는 전용 api(?)
+          	}
+          }
+          ```
+
+       3. 최종적으로 something()을 실행하면 10이 전달되어(firstAction(10) > increase(10) > state.count 10이 증가함)
+
+    3. 외부(component)에서 store(state) 탐색 data 참조 : 
+
+       1. store에 getters 속성 작성
+
+          ```
+          getters: {
+              getCount: state => {
+          		return state.count;
+              }
+          }
+          ```
+
+          
+
+       2. computed에 추가하여 getters 접근/활용
+
+          ```
+          computed : {
+            testcount() {
+              return this.$store.getters.getCount;
+            },
+          }
+          ```
+
+          * this.$store라는 문법으로 전역객체 접근이 가능하고, store의 getters를 통해 state 접근
+
+
 
 ## 75. 부모요소 / 자식요소 탐색
 
@@ -3131,7 +3258,7 @@ style.propertyName... 이 안먹히더라.
 
 이때 우리는 브라우저에서 제공하는 ***getComputedStyle()\*** 메소드를 이용할 수 있다.
 
-문법 : window.getComputedStlye(DOM).propery 
+문법 : window.getComputedStlye(DOM).property 
 
 ## 81. JS) flat() - 일단 적어놓음, 사후에 study할것
 
