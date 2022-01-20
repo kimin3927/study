@@ -2308,21 +2308,77 @@ function getDistanceFromLatLonInKm(lat1, lng1, lat2,lng2) { //(1)
 ## 65.CSS: vertical-align
 
 - vertical-align이 간단할것 같은데 매번 잘 안돼서 정리 
+
 - 관련속성
-  - middle : 중앙임
+  - middle : 중앙
   - baseline: (알파벳 표기시의) baseline
   - sub: 바닥
   - super: 위
+
 - 에러 케이스 
   - div에 middle align을 시키기 위해서는 아래 조건이 필요하다.
-    1. vertical-align: middle 적용(제일 기본)
-    2. display: table-cell; 적용 
+    1. <u>컨테이너</u>에 vertical-align: middle 적용(제일 기본)
+    2. 컨테이너에 display: table-cell; 적용 
     3. float 속성 부여 x 
+
 - 유사 효과
   - div display: flex를 이용하기
     1. div display: flex; 설정
     2. align-items: center; 설정
     3. 단 이 경우엔 내부 중앙정렬 또한 text-align 적용불가. justify-content: sapce around 사용필요
+
+- 검증
+
+  ```
+  1. <div style="border:1px solid red; width:300px; height:200px; vertical-align:middle; display:table-cell">
+  	1
+     </div> //정렬 o
+  2. <div style="border:1px solid red; width:300px; height:200px; vertical-align:middle; display:table-cell">
+  			<a href="">11</a>
+     </div> // 정렬 o
+  3. <div style="border:1px solid red; width:300px; height:200px; vertical-align:middle; display:table-cell">
+  	 <div style="display:inline">33</div>
+  	 <img src="https://papago.naver.com/97ec80a681e94540414daf2fb855ba3b.svg" alt="" style="width:100px; height:20px">
+     </div> // 정렬 o
+  4. <div style="border:1px solid black; width:300px; height:200px; vertical-align:middle; display:flex">
+  	 <div style="border:1px solid red; width:100px; height:100px; vertical-align:middle; display:table-cell">
+  		1
+  	 </div> //정렬 xxx
+     </div> // 조부모 컨테이너가 flex일 경우, 부모요소에 vertical-align이 적용되지 않음을 확인
+  4. <div style="border:1px solid black; width:300px; height:200px; vertical-align:middle; display:flex">
+  	 <div style="border:1px solid red; width:100px; height:100px; vertical-align:middle; display:flex">
+  		1
+  	 </div> //정렬 xxx
+     </div> // 결국 조부모 컨테이너가 flex라면, 부모 컨텐츠 또한 flex시켜야 최종적으로 vertical-align이 가능함을 확인
+  ```
+
+- item에 적용된 vertical-align의 효과
+
+  ```
+  1.<div style="border:1px solid red; width:1300px; height:200px; vertical-align:middle; display:table-cell"> 
+  	<img src="https://papago.naver.com/97ec80a681e94540414daf2fb855ba3b.svg" alt="" style="width:400px;">
+  	글씨부분
+    </div> // div 내부 요소가 div 중앙에 중앙 수직 정렬이 되어있고, 큰 이미지와 작은 글씨는 나란히, 가운데 맞춤이 되었음
+  
+  2.<div style="border:1px solid red; width:1300px; height:200px;">
+  	<img src="https://papago.naver.com/97ec80a681e94540414daf2fb855ba3b.svg" style="width:400px; vertical-align:top">
+  	글씨부분
+    </div> // div 내부 요소가 div 상단에 수직정렬이 되어있고, 큰 이미지와 작은 글씨는 윗쪽 맞춤이 되었음
+    
+  3.<div style="border:1px solid red; width:1300px; height:200px;">
+  	<img src="https://papago.naver.com/97ec80a681e94540414daf2fb855ba3b.svg" style="width:400px; vertical-align:middle">
+  	글씨부분
+    </div> // div 내부 요소가 div 상단에 수직정렬이 되어있고, 큰 이미지와 작은 글씨는 가운데 맞춤이 되었음
+  
+  ```
+
+  ​	
+
+
+
+
+
+
 
 ## 66.
 
@@ -3157,7 +3213,10 @@ Header디자인을 위해 부트스트랩뷰에서 설치 : npm install bootstra
 
           * this.$store라는 문법으로 전역객체 접근이 가능하고, store의 getters를 통해 state 접근
 
-
+  - store에서 쓰이는  인자 전달 문법에 관하여
+    1. 변수는 2개만 선택가능한 것으로 보임, 복수의 인자를 넘기려면 객체로 묶어서 최종적으로 2개의 인자가 넘어가는 모양으로 완성
+    2. actions 함수정의상에서 commit전달 또한 객체형식으로 보내야만 하는듯
+    3. 
 
 ## 75. 부모요소 / 자식요소 탐색
 
@@ -3222,7 +3281,7 @@ tr.find(".title input").val()
 
 ## 78. 생소한 태그속성 정리
 
-**a 태그 - target**
+### **1. a 태그 - target**
 
 링크된 문서를 클릭했을 때 문서가 열릴 위치를 명시합니다.
 
@@ -3235,6 +3294,79 @@ tr.find(".title input").val()
 | _parent | 링크된 문서를 현재 프레임의 부모 프레임에서 오픈함.             |
 | _top    | 링크된 문서를 현재 윈도우 전체에서 오픈함.                  |
 | 프레임 이름  | 링크된 문서를 명시된 프레임에서 오픈함.                    |
+
+
+
+### **2. 줄 바꿈 관련 속성들**
+
+**white-space 속성값**
+	normal : 기본값, 콘텐츠가 요소의 너비를 초과할 경우 다음 줄로 바뀝니다. / 연결문자(글자토막)는 보존 
+	nowrap : 줄 바꿈이 실행되지 않습니다. 즉, 콘텐츠가 다음 줄로 바뀌지 않습니다.
+	pre : 줄 바꿈과 기타 공백이 유지됩니다. (이 속성값은 !DOCTYPE 선언에서 표준 준수 모드를 지정할 경우에 지	원되고 !DOCTYPE 선언에서 표준 준수 모드를 지정하지 않으면 이 값을 검색할 수는 있지만 렌더링에 양향을 주	지 않으며 normal 값처럼 동작합니다.
+	pre-line : 줄 바꿈 시퀀스가 유지됩니다.
+	pre-wrap : 줄 바꿈 시퀀스가 축소됩니다.
+	inherit : 부모 요소로부터 값을 상속 받습니다.
+
+** 영어는 normal로 했을때 연결문자보존(?)에 의해 띄어쓰기 없을 때 줄 바꿈이 안되는 반면
+
+​	한글은 연결된 글자라 할지라도 줄 바꿈이 일어난다.
+
+| 개행 문자      | 스페이스, 탭 | 자동 줄 바꿈 | 줄 끝의 공백 |         |
+| :------------- | :----------- | :----------- | :----------- | ------- |
+| `normal`       | 병합         | 병합         | 예           | 제거    |
+| `nowrap`       | 병합         | 병합         | 아니오       | 제거    |
+| `pre`          | 유지         | 유지         | 아니오       | 유지    |
+| `pre-wrap`     | 유지         | 유지         | 예           | 넘침    |
+| `pre-line`     | 유지         | 병합         | 예           | 제거    |
+| `break-spaces` | 유지         | 유지         | 예           | 줄 바꿈 |
+
+
+
+
+
+
+
+**word-wrap 속성값**
+	normal : 기본값으로 콘텐츠가 컨테이너 경계를 초과합니다.
+	break-word : 콘텐츠가 다음 줄로 넘어가고 필요한 경우 단어 줄 바꿈이 발생합니다.
+
+**word-break 속성값**
+	normal : 평소 규칙대로 단어를 분리합니다.
+	break-all : 단어가 문자별로 분리되어 단어의 중간에도 줄 바꿈이 됩니다.
+	keep-all : 문자별로 분리되는 것을 금지합니다.**
+
+**word-spacing 속성값**
+	normal : 기본값으로 기본 간격을 나타냅니다.
+	length(길이) : 부동 소수점 숫자 뒤에 절대 단위 지정자(cm , mm , in , pt , pc) 또는 상대 단위 지정자(em , ex , px)가 오는 값입니다.
+	inherit : 부모 요소로부터 값을 상속 받습니다.**
+
+### 3.line-hight 속성
+
+> line-hight는 font-size에 leading영역(상,하)을 합한 전체 줄 높이를 의미한다.
+
+<img src="C:\Users\k\AppData\Roaming\Typora\typora-user-images\image-20220118125843747.png" alt="image-20220118125843747" style="zoom:50%;" />
+
+line-height는 font-size와 별개의 속성이면서도 포함하는 개념이기 때문에, font-size와의 호응이 중요할 것으로 보인다. 
+
+
+
+1. line-height == font-size case
+
+   
+
+2. line-height > font-size case
+
+3. line-height < font-size case
+
+
+
+
+
+* 상하 leading을 바꿀 수 있는 leading-trim, text-edge같은 속성도 한번씩 거론이 되지만 최신 속성인것으로 보임(?) 될지 안될지 모르겠음
+
+
+
+
 
 ## 79. 숫자처리) 숫자양식을 맞추기 위해 '0'붙이기
 
@@ -3402,6 +3534,109 @@ chart.js 시도해보기
   1. if(!null) == true?
   2. if(!undefine) == true?
   3. if("") == false? 
+
+
+
+## 84. 웹 브라우저의 렌더링 모드
+
+http://chongmoa.com/html/441
+
+
+
+웹 브라우저는 두 가지 렌더링 모드를 지니고 있다.
+
+1. 표준모드(Standard mode)
+
+2. 쿼크모드(Quirks mode)
+
+   - 예전문서라고 판단될 경우에 쓰임 
+   - 이전 세대의 브라우저에 맞는 비표준적 방법의 CSS를 적용한다.
+   - 오래된 웹페이지들을 브라우저에서 깨뜨리지 않기 위한 모드
+
+   
+
+3. 브라우저의 렌더링 모드 선택
+
+   그렇다면 브라우저는 문서가 최신인지 오래된 문서인지 어떻게 판단할까?
+   바로 문서 상단에 있는 **DTD(Document Type Defination)**를 보고 쿼크모드 혹은 표준모드로 렌더링한다.
+
+   선언된 doctype에 따라 렌더링할 모드를 선택하게 되는데 이 과정을 doctype sniffing 또는 doctype switching이라고 한다.
+
+   먼저 DTD의 구성은 **PUBLIC 문자열과 FPI(formal public identifier), FSI(formal system identifier)** 로 이루어져 있다. 
+
+\1. FPI와 FSI 모두를 포함하는 doctype 선언 예
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd[**Viewer**](http://www.w3.org/TR/html4/strict.dtd?iframe=true&width=100%&height=100%)">
+
+ 
+
+\2. FPI만 선언되어있는 doctype 선언 예
+
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+ 
+
+1번처럼 FPI와 FSI가 동시에 기술되어 있을 경우 브라우저는 표준모드를 선택하고
+
+2번처럼 FSI가 기술되어있지 않은 경우 브라우저는 쿼크모드로 렌더링한다. 또 아예 DTD를 적지 않는 경우도 브라우저는 쿼크모드를 선택한다.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 [^1]: 버블링 : 이벤트 전달방식의 2가지 방법중 하위요소에서 상위요소로 향하는 방식
 [^2]: https://ui.toast.com/weekly-pick/ko_20160826
