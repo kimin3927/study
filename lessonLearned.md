@@ -182,10 +182,26 @@ data 속성용 : dataset
   $("#myDiv").removeData("kimin") // delete;
   ```
 2. attribute 
-   
+
    getAttribute;
+
+   ```
+   var jbHref = document.getElementById( 'abc' ).getAttribute( 'href' );
+   ```
+
+   setAttribute;
+
+   ```
+   document.getElementById( 'xyz' ).setAttribute( 'title', 'This is title' )
+   ```
+
    
-   d
+
+**attribute 와 property의 차이는 무엇인가?**
+
+Attributes는 HTML 텍스트 문서에 있는 것이고 properties는 HTML DOM 트리에 있는 것이다. 이것은 attribute는 변하지 않고 초기 (default)값을 전달한다는 것은 의미한다. 반면에 HTML properties는 변할 수 있다. 예를 들어 사용자가 체크박스를 체크했거나 input 박스에 텍스트를 넣었거나 JavaScript로 값을 변경하면 property의 값은 변한다.
+
+
 
 ## 4. innerText, innerHTML, textContent  등등 비교
 
@@ -199,21 +215,21 @@ data 속성용 : dataset
 
 2. Jquery
    
-   ### $("셀렉터").html()
+   $("셀렉터").html()
    
-   **셀렉터태그내에 존재하는 자식태그을 통째로 읽어올때 사용되는 함수**
+   셀렉터태그내에 존재하는 자식태그을 통째로 읽어올때 사용되는 함수
    
-   **※ 태그 동적추가할때 주로 사용되는 함수**
+   ※ 태그 동적추가할때 주로 사용되는 함수
 
-### $("셀렉터").text()
+​		$("셀렉터").text()
 
-   **셀렉터태그내에 존재하는 자식태그들 중에 html태그는 모두 제외 한 채 문자열만 출력하고자 할때 사용되는 함수**
+   셀렉터태그내에 존재하는 자식태그들 중에 html태그는 모두 제외 한 채 문자열만 출력하고자 할때 사용되는 함수
 
-   **※ html태그까지 모두 문자로 인식시켜주는 함수**
+   ※ html태그까지 모두 문자로 인식시켜주는 함수
 
-### $("셀렉터").val()
+$("셀렉터").val()
 
-   **INPUT 태그에 정의된 value속성의 값을 확인하고자 할때 사용되는 함수**
+   INPUT 태그에 정의된 value속성의 값을 확인하고자 할때 사용되는 함수
 
 ## 5. prototype
 
@@ -2824,7 +2840,7 @@ Header디자인을 위해 부트스트랩뷰에서 설치 : npm install bootstra
     
     1. 하위 컴포넌트에는 Props 속성 및 props data명을 추가한다.
     
-    2. app-header 태그에서 Pros속성을 bind하고, 상위 컴포넌트에서의 data명을 병기한다.
+    2. app-header 태그에서 Prop성을 bind하고, 상위 컴포넌트에서의 data명을 병기한다.
     
     ```
     
@@ -3340,7 +3356,7 @@ tr.find(".title input").val()
 	length(길이) : 부동 소수점 숫자 뒤에 절대 단위 지정자(cm , mm , in , pt , pc) 또는 상대 단위 지정자(em , ex , px)가 오는 값입니다.
 	inherit : 부모 요소로부터 값을 상속 받습니다.**
 
-### 3.line-hight 속성
+### 3. line-hight 속성
 
 > line-hight는 font-size에 leading영역(상,하)을 합한 전체 줄 높이를 의미한다.
 
@@ -3402,6 +3418,8 @@ style.propertyName... 이 안먹히더라.
 이때 우리는 브라우저에서 제공하는 ***getComputedStyle()\*** 메소드를 이용할 수 있다.
 
 문법 : window.getComputedStlye(DOM).property 
+
+
 
 ## 81. JS) flat() - 일단 적어놓음, 사후에 study할것
 
@@ -3579,21 +3597,28 @@ http://chongmoa.com/html/441
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd[**Viewer**](http://www.w3.org/TR/html4/strict.dtd?iframe=true&width=100%&height=100%)">
 
-
-
 \2. FPI만 선언되어있는 doctype 선언 예
 
  <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-
-
-
 1번처럼 FPI와 FSI가 동시에 기술되어 있을 경우 브라우저는 표준모드를 선택하고
 
 2번처럼 FSI가 기술되어있지 않은 경우 브라우저는 쿼크모드로 렌더링한다. 또 아예 DTD를 적지 않는 경우도 브라우저는 쿼크모드를 선택한다.
 
 
 
+## 85. 시간다루기
 
+
+
+iso format
+
+new Date
+
+toISOString()
+
+`.toUTCString()`,
+
+RFC2822 또는 ISO 8601
 
 
 
