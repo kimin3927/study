@@ -1090,7 +1090,34 @@ SEO 최적화를 위한 가이드 예시
     }
     ```
 
-## 26. CSS [grid](https://studiomeal.com/archives/533)(9/10)
+## 26. CSS[ Flex](https://studiomeal.com/archives/197)(9/10)
+
+1. 속성 개요 
+
+   - flex container 내부에, flex item들을 알맞게 짜넣기 위한 기능임 
+   - item이 Block요소 일지라도 inline요소화 된다.(즉 width 특정이 가능함)
+   - item의 height는 컨테이너 높이에 100%맞출 수 있다.(flex-direction : row, align-items: stretch 시)
+
+2. 적용요령
+
+   1. 부모태그(flex container)
+
+      - display: flex; 또는 inline-flex; 입력 (Block or inline 여부)
+
+      - flex -direction 설정(<u>row</u> / column / row-reverse / column-reverse): item을 쌓는 방향/순서
+
+      - flex-wrap 설정(<u>nowrap</u>/ wrap) : 줄바꿈 속성    </li>
+
+      - justify-content 설정(flex-start / flex-end / center / space-between / space-around/ space-evenly): 좌우정렬조건
+
+      - align-items 설정(<u>stretch</u> / flex-start / flex-end / center) : 수직정렬조건
+
+      2. 자식태그(flex item, 목표태그)에 
+
+         - flex-grow(<u>0</u> / 기타 정수) : 0외의 수를 쓰면 자식태그 width가 stretch 됨, 각 자식태그 grow값에 비례하여 stretch 됨 
+         - align-self(<u>auto</u> / stretch / flex-start / flex-end / center): flex items의 개별 조작용
+
+## 27. CSS [grid](https://studiomeal.com/archives/533)(9/10)
 
 1. 속성 개요 
    
@@ -1163,7 +1190,7 @@ SEO 최적화를 위한 가이드 예시
       .footer { grid-area: footer; }
       ```
 
-## 27. CSS media query(9/10)
+## 28. CSS media query(9/10)
 
 미디어 쿼리는 CSS3에 포함되어 있으며, 컨텐츠의 변경없이 주로 화면의 크기에 따라 스타일 시트를 달리하여 적절한 모양을 보여줄 수 있[다](https://offbyone.tistory.com/121).
 
@@ -1185,7 +1212,7 @@ SEO 최적화를 위한 가이드 예시
    }
    ```
 
-## 28. CSS 가상 셀렉터(hober,active, focus)(9/10)
+## 29. CSS 가상 셀렉터(hober,active, focus)(9/10)
 
 1. hover
    
@@ -1206,7 +1233,7 @@ a:hover {
    
    사용자의 마우스가 해당 요소를 클릭하면 요소의 스타일 변경할 수 있습니다. 
 
-## 29. CSS Transition(9/10)
+## 30. CSS Transition(9/10)
 
 "CSS3 애니메이션은 요소에 적용되는 CSS 스타일을 다른 CSS 스타일로 부드럽게 전환시켜 줍니다.
 
@@ -1232,7 +1259,7 @@ animation 속성은 요소의 모양과 동작을 키프레임 단위로 변경�
 
 transition 속성과 animation 속성의 가장 큰 차이는 transition 속성은 요소의 상태가 바뀌어야 바뀌는 상태를 애니메이션으로 표현하지만, animation 속성은 요소의 상태 변화와 상관 없이 애니메이션을 실행한다. 또한 @keyframes 속성으로 프레임을 추가할 수 있다.
 
-## 30. Object 메서드(9/10)
+## 31. Object 메서드(9/10)
 
 객체 관련 메서드 정리해본다. 
 
@@ -1282,12 +1309,42 @@ transition 속성과 animation 속성의 가장 큰 차이는 transition 속성�
 
 5. Object.assign()
    
-   -> 해당 객체가 보유한 전체 키&밸류 세트들을 배열로 반환한다. 
+   -> 1. 파라미터로 객체1과, 객체 2~~ 를 취한다.
+   
+   	2. 객체 1에 객체 2~들을 병합시킨다. 
+   	2. 해당 행위를 새로운 변수에 묶더라도 이는 객체 1과 완전 일치 관계(===)이며, 얕은복사가 되었음을 의미한다.(?)
+   	2. 병합되는 각 객체간에 동일한 key가 충돌할 경우 뒷쪽 객체값을 우선한다. 
+
+   ```
+   예1) 제일 기본적인 병합상황 예시
+   
+   const a = {a:"a", b:"b", c:"c"}
+   const b = {d:"d", e:"e", f:"f"}
+   Object.assign(a,b) // a = {a:"a", b:"b", c:"c", d:"d", e:"e", f:"f"}
+   
+   예2) 새로 선언한 변수의 의미가 별로 없음을 보여주는, param1 객체가 주인이라는 것을 보여주는 예시
+   const a = {a:"a", b:"b", c:"c"}
+   const b = {d:"d", e:"e", f:"f"}
+   const k = Object.assign(a,b) 
+   // a = {a:"a", b:"b", c:"c", d:"d", e:"e", f:"f"}
+   // k = {a:"a", b:"b", c:"c", d:"d", e:"e", f:"f"}
+   // a === k
+   
+   예3) 병합관계에 있는 객체간의 키 중복에 대한 예시
+   const a = {a:"a", b:"b", c:"c"}
+   const b = {a:"a1", b:"b1", c:"c1"}
+   Object.assign(a,b) // a = {a:"a1", b:"b1", c:"c1"}
+   // 물론 param2는 종속 객체이므로, 값만 같을뿐 a !== b
+   
+   예4) 객체 a,b를 통합하되 원본을 손상하지 않고자한다면,(깊은복사하려면)
+   const a = {a:"a", b:"b"}
+   const b = {d:"a1", e:"b1"}
+   const c = Object.assign({},a,b) // c = {a:"a", b:"b", d:"a1", e:"b1"}
+   
+   
    
    ```
-   예
-   ```
-
+   
 6. Object.hasOwnProperty
    
    -> 해당 객체가 보유한 전체 키&밸류 세트들을 배열로 반환한다. 
@@ -1333,31 +1390,7 @@ transition 속성과 animation 속성의 가장 큰 차이는 transition 속성�
     // view 배우는 과정에서 view의 reactivity를 보여준 예시 
 ```
 
-## 31. CSS[ Flex](https://studiomeal.com/archives/197)(9/10)
 
-1. 속성 개요 
-   
-   - flex container 내부에, flex item들을 알맞게 짜넣기 위한 기능임 
-   - item이 Block요소 일지라도 inline요소화 된다.(즉 width 특정이 가능함)
-   - item의 height는 컨테이너 높이에 100%맞출 수 있다.(flex-direction : row, align-items: stretch 시)
-
-2. 적용요령
-   
-   1. 부모태그(flex container)
-      
-      - display: flex; 또는 inline-flex; 입력 (Block or inline 여부)
-      
-      - flex -direction 설정(<u>row</u> / column / row-reverse / column-reverse): item을 쌓는 방향/순서
-      
-      - flex-wrap 설정(<u>nowrap</u>/ wrap) : 줄바꿈 속성    </li>
-      
-      - justify-content 설정(flex-start / flex-end / center / space-between / space-around/ space-evenly): 좌우정렬조건
-      
-      - align-items 설정(<u>stretch</u> / flex-start / flex-end / center) : 수직정렬조건
-      2. 자식태그(flex item, 목표태그)에 
-         
-         - flex-grow(<u>0</u> / 기타 정수) : 0외의 수를 쓰면 자식태그 width가 stretch 됨, 각 자식태그 grow값에 비례하여 stretch 됨 
-         - align-self(<u>auto</u> / stretch / flex-start / flex-end / center): flex items의 개별 조작용
 
 ## 32. position(9/10)
 
@@ -3682,7 +3715,30 @@ RFC2822 또는 ISO 8601
 
 3. 논의할사항?의의?
 
+## 87. 웹 폰트 사용방법
 
+
+
+1. 웹 폰트 등록(font-face)
+
+   ```
+   @font-face {
+       font-family: 'SDSamliphopangche_Outline';
+       src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts-20-12@1.0/SDSamliphopangche_Outline.woff') format('woff');
+       font-weight: normal;
+       font-style: normal;
+   }
+   ```
+
+2. 적용(해당 폰트 패밀리 사용)
+
+   ```
+   body {
+   	font-family: 'SDSamliphopangche_Outline';
+   }
+   ```
+
+   
 
 
 
