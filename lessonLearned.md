@@ -1,3 +1,7 @@
+[TOC]
+
+
+
 # 오답노트
 
 | 순번 | 등록일자 | 내용                                                     | 완료일자  |
@@ -83,16 +87,16 @@
 |  79  |   1/4    | 숫자처리) 숫자양식을 맞추기 위해 '0'붙이기               |           |
 |  80  |   1/5    | Jquery double dollar sign                                |           |
 |  81  |   1/10   | JS) flat()                                               |           |
-|      |          |                                                          |           |
-|      |          |                                                          |           |
-|      |          |                                                          |           |
-|      |          |                                                          |           |
-|      |          |                                                          |           |
+|  82  |          |                                                          |           |
+|  83  |          |                                                          |           |
+|  84  |          |                                                          |           |
+|  85  |          | 시간다루기                                               |           |
+|  86  |          | 자바스크립트의 역사                                      |           |
 |      |          |                                                          |           |
 
-## 1.이벤트 위임(Event Delegation)
+## 1.이벤트 위임(8/12)
 
-이벤트위임이란, **상위 노드에서 하위 노드의 이벤트를 제어** 하는 방식이다.
+이벤트위임이란, **상위 노드에서 하위 노드의 이벤트를 제어** 하는 방식이다.(Event Delegation)
 
 이벤트 위임을 위한 코드는 매우 간단하다. 화면의 모든 `li`에 이벤트 리스너를 추가하는 대신 **`li`의 상위 요소인 `ul` 태그에 이벤트 리스너를 연결** 하고, **하위에서 발생한 클릭 이벤트를 감지** 하는 것이다.[출처](https://frontsom.tistory.com/13)
 
@@ -130,7 +134,7 @@
   
   td에 대한 Event바인딩을 table에 위임하고 싶은데, 안됨 
 
-## 2.target, CurrentTarget 차이비교
+## 2.target, CurrentTarget 차이비교(8/13)
 
 이벤트가 위임되는 경우, 하위객체는 event 
 
@@ -152,7 +156,7 @@ event.currentTarget = 해당 이벤트가 '설치된' 요소.
 
 즉, event.target은 부모로부터 이벤트가 위임되어 발생하는 자식의 위치, 내가 클릭한 자식 요소를 반환한다. 하지만 currentTarget은 이벤트가 부착된 부모의 위치를 반환한다.
 
-## 3. data속성 / dataset / attribute
+## 3. data속성 / dataset / attribute(8/14)
 
 1. data 속성(dataset 메서드)
 
@@ -203,7 +207,7 @@ Attributes는 HTML 텍스트 문서에 있는 것이고 properties는 HTML DOM �
 
 
 
-## 4. innerText, innerHTML, textContent  등등 비교
+## 4. innerText, innerHTML, textContent  등등 비교(8/15)
 
 1. 자바스크립트
    
@@ -231,7 +235,7 @@ $("셀렉터").val()
 
    INPUT 태그에 정의된 value속성의 값을 확인하고자 할때 사용되는 함수
 
-## 5. prototype
+## 5. prototype(8/16)
 
 prototype은 속성의 하나로서, 함수는 기본적으로 갖고있는 속성이다. 
 
@@ -287,7 +291,7 @@ Human.prototype = Object.create(Animal.prototype) ;  // Human의 prototype으로
 
 Human.prototype.constructor = Human; 
 
-## 6.자바스크립트 프로처럼 쓰는 팁
+## 6.자바스크립트 프로처럼 쓰는 팁(8/14)
 
 #### 1. Ternary Operator(3항 조건 연산자, ?) 적극 활용
 
@@ -548,7 +552,7 @@ console.log(result); // 48
 
 <div style=text-align:right>- 끝 -</div>
 
-## 7. VS코드 들여쓰기 설정
+## 7. VS코드 들여쓰기 설정(8/17)
 
 1. 탭사이즈 확인
    
@@ -566,7 +570,7 @@ console.log(result); // 48
 
 <div style=text-align:right>- 끝 -</div>
 
-## 8. 속성 접근자 [ ]
+## 8. 속성 접근자 (8/18)
 
 - https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Operators/Property_Accessors
 
@@ -604,7 +608,7 @@ key에 class를 집어넣어서 활용하는 코드를 보게 되어 []접근법
 
 <div style=text-align:right>- 끝 -</div>
 
-## 9. Closure
+## 9. Closure(8/19)
 
 클로저(closure)는 내부함수가 외부함수의 맥락(context)에 접근할 수 있는 것을 가르킨다. 
 
@@ -661,7 +665,7 @@ factoryMovieName과 getTitle&setTitle의 관계는 '외부함수'와'내부함�
   closure가 -> 있다? 
   ```
 
-## 10. 비동기
+## 10. 비동기(8/20)
 
 동기 synch (synchronous) : 일반적인 자바스크립트 실행 방식
 
@@ -673,7 +677,7 @@ setTimeout(web API), fetch(?) 등은, 자바스크립트 외부의 엔진(?)에 
 
 이런 식으로 비동기 함수는 스스로의 완료를 기다리지 않게 하기 위해, 다른 함수와 병렬적(?)으로 함수를 실행시킨다. 
 
-## 11. 프로미스
+## 11. 프로미스(8/21)
 
 자바스크립트에서 제공하는 비동기처리를 쉽게하게 하기위한 Class(object)임
 
@@ -823,11 +827,11 @@ setTimeout(web API), fetch(?) 등은, 자바스크립트 외부의 엔진(?)에 
     
     먼저완료된 promise를 return한다. 
 
-## 12. 인스턴스
+## 12. 인스턴스(8/22)
 
 **생성자 함수가 반환해주는 빈 객체는 흔히 Instance(인스턴스)라고 부릅니다.**
 
-## 13.Class
+## 13.Class(8/23)
 
 "자바스크립트는 실제 클래스 기능을 지원하지 않는다. 대신 *모조 클래스* 를 정의."
 
@@ -866,9 +870,9 @@ let user = new User("John");
 user.sayHi();
 ```
 
-## 14. git
+## 14. git(8/24)
 
-## 15. npm
+## 15. npm(8/25)
 
 "node로 프로젝트를 진행할 때 많이 쓰이는 패키지 관리 툴로는 대표적으로 **npm과 yarn**이 있습니다."
 
@@ -876,7 +880,7 @@ user.sayHi();
 
 "npm이 없었을 때에는 필요로 하는 기능을 추가하기 위해서 직접 작성하거나 github를 통해 다운로드하여 사용해야 했습니다. 이러한 불편을 해소하기 위해 나타났으며, Node.js를 설치하기만 하면(기본적으로 npm은 Node.js 내에 내장되어 있습니다) 명령어 한 줄로 기능의 추가가 가능합니다."
 
-## 16. 생활코딩 : node.js
+## 16. 생활코딩 : node.js(8/26)
 
 2009년 Ryan dahl이라는 사람이 node.js프로젝트를 했고,
 
@@ -916,11 +920,11 @@ user.sayHi();
 
 4. 함수를 이용해서 정리정돈하기
 
-## 17. 모듈
+## 17. 모듈(8/27)
 
-## 18. 컴포넌트
+## 18. 컴포넌트(8/28)
 
-## 19. 객체지향
+## 19. 객체지향(8/29)
 
 OOP : Object Oriented Programing , 프로그래밍 패러다임, '로직을 상태와 행위로 이루어진 객체로 만드는 것이다. '
 
@@ -932,7 +936,7 @@ OOP : Object Oriented Programing , 프로그래밍 패러다임, '로직을 상�
 
 {절차지향프로그래밍?}
 
-## 20. DOM
+## 20. DOM(8/30)
 
 BOM : 브라우저객체 모델 - 브라우저(윈도우) 구성에 대한 설명, 원칙
 
@@ -942,7 +946,7 @@ DOM은 노드로 구성되어 있고, Tree형식으로 되어 있다.
 
 문서를 트리모양의 노드집단으로 정의하는 것이 문서객체 모델이다. 
 
-## 21. [구조분해 할당](https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment)
+## 21. [구조분해 할당](https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment)(8/31)
 
 "**구조 분해 할당** 구문은 배열이나 객체의 속성을 해체하여 그 값을 개별 변수에 담을 수 있게 하는 JavaScript 표현식입니다."
 
@@ -973,7 +977,7 @@ console.log(a); // 1
 console.log(b); // 2
 ```
 
-## 22. SEO
+## 22. SEO(9/10)
 
 "**검색 엔진 최적화**(search engine optimization)으로부터 웹사이트나 웹페이지에 대한 웹사이트 트래픽의 품질과 양을 개선하는 과정이다.2019년도 이후로 한국 내 구글의 점유율이 30%를 넘어서고 있고, 네이버의 점유율이 점점 하락 하고 있으며, 구글은 네이버와같은 블로그 우선노출과 같은 정책이 없고 구글 애즈를 제외한 다른 검색결과에 한해서는 검색엔진 최적화 여부에 따라 웹사이트를 랭킹 시키고 있기 때문에 검색엔진 최적화(SEO)의 중요성이 점점 부각되고 있는 실정이다."
 
@@ -1009,7 +1013,7 @@ SEO 최적화를 위한 가이드 예시
        
        그 외에도 headings `<h1>, <h2>, <h3>, <h4>, <h5>, <h6>` , ordered and unordered lists `<ol>, <ul>, <li>`, paragraphs `<p>`, images `<img>`, tables `<table>, <thead>, <tbody>, <tfoot>, <tr>, <td>`, form elements `<form>, <fieldset>, <label>, <input>, <textarea>`, and links `<a>`가 시맨틱 요소에 해당한다.
 
-## 23. 함수 표현 형태(화살표 함수 등)
+## 23. 함수 표현 형태(화살표 함수 등)(8/14)
 
 - 기본형태
   
@@ -1055,9 +1059,9 @@ SEO 최적화를 위한 가이드 예시
   }
   ```
 
-## 24.then
+## 24.then(9/10)
 
-## 25. for of / for in 비교
+## 25. for of / for in 비교(9/10)
 
 |     | for of             | for in                                               |
 |:---:|:------------------:|:----------------------------------------------------:|
@@ -1086,7 +1090,34 @@ SEO 최적화를 위한 가이드 예시
     }
     ```
 
-## 26. CSS [grid](https://studiomeal.com/archives/533)
+## 26. CSS[ Flex](https://studiomeal.com/archives/197)(9/10)
+
+1. 속성 개요 
+
+   - flex container 내부에, flex item들을 알맞게 짜넣기 위한 기능임 
+   - item이 Block요소 일지라도 inline요소화 된다.(즉 width 특정이 가능함)
+   - item의 height는 컨테이너 높이에 100%맞출 수 있다.(flex-direction : row, align-items: stretch 시)
+
+2. 적용요령
+
+   1. 부모태그(flex container)
+
+      - display: flex; 또는 inline-flex; 입력 (Block or inline 여부)
+
+      - flex -direction 설정(<u>row</u> / column / row-reverse / column-reverse): item을 쌓는 방향/순서
+
+      - flex-wrap 설정(<u>nowrap</u>/ wrap) : 줄바꿈 속성    </li>
+
+      - justify-content 설정(flex-start / flex-end / center / space-between / space-around/ space-evenly): 좌우정렬조건
+
+      - align-items 설정(<u>stretch</u> / flex-start / flex-end / center) : 수직정렬조건
+
+      2. 자식태그(flex item, 목표태그)에 
+
+         - flex-grow(<u>0</u> / 기타 정수) : 0외의 수를 쓰면 자식태그 width가 stretch 됨, 각 자식태그 grow값에 비례하여 stretch 됨 
+         - align-self(<u>auto</u> / stretch / flex-start / flex-end / center): flex items의 개별 조작용
+
+## 27. CSS [grid](https://studiomeal.com/archives/533)(9/10)
 
 1. 속성 개요 
    
@@ -1159,7 +1190,7 @@ SEO 최적화를 위한 가이드 예시
       .footer { grid-area: footer; }
       ```
 
-## 27. CSS media query
+## 28. CSS media query(9/10)
 
 미디어 쿼리는 CSS3에 포함되어 있으며, 컨텐츠의 변경없이 주로 화면의 크기에 따라 스타일 시트를 달리하여 적절한 모양을 보여줄 수 있[다](https://offbyone.tistory.com/121).
 
@@ -1181,7 +1212,7 @@ SEO 최적화를 위한 가이드 예시
    }
    ```
 
-## 28. CSS 가상 셀렉터(hober,active, focus)
+## 29. CSS 가상 셀렉터(hober,active, focus)(9/10)
 
 1. hover
    
@@ -1202,7 +1233,7 @@ a:hover {
    
    사용자의 마우스가 해당 요소를 클릭하면 요소의 스타일 변경할 수 있습니다. 
 
-## 29. CSS Transition
+## 30. CSS Transition(9/10)
 
 "CSS3 애니메이션은 요소에 적용되는 CSS 스타일을 다른 CSS 스타일로 부드럽게 전환시켜 줍니다.
 
@@ -1228,7 +1259,7 @@ animation 속성은 요소의 모양과 동작을 키프레임 단위로 변경�
 
 transition 속성과 animation 속성의 가장 큰 차이는 transition 속성은 요소의 상태가 바뀌어야 바뀌는 상태를 애니메이션으로 표현하지만, animation 속성은 요소의 상태 변화와 상관 없이 애니메이션을 실행한다. 또한 @keyframes 속성으로 프레임을 추가할 수 있다.
 
-## 30. Object 메서드
+## 31. Object 메서드(9/10)
 
 객체 관련 메서드 정리해본다. 
 
@@ -1278,12 +1309,42 @@ transition 속성과 animation 속성의 가장 큰 차이는 transition 속성�
 
 5. Object.assign()
    
-   -> 해당 객체가 보유한 전체 키&밸류 세트들을 배열로 반환한다. 
+   -> 1. 파라미터로 객체1과, 객체 2~~ 를 취한다.
+   
+   	2. 객체 1에 객체 2~들을 병합시킨다. 
+   	2. 해당 행위를 새로운 변수에 묶더라도 이는 객체 1과 완전 일치 관계(===)이며, 얕은복사가 되었음을 의미한다.(?)
+   	2. 병합되는 각 객체간에 동일한 key가 충돌할 경우 뒷쪽 객체값을 우선한다. 
+
+   ```
+   예1) 제일 기본적인 병합상황 예시
+   
+   const a = {a:"a", b:"b", c:"c"}
+   const b = {d:"d", e:"e", f:"f"}
+   Object.assign(a,b) // a = {a:"a", b:"b", c:"c", d:"d", e:"e", f:"f"}
+   
+   예2) 새로 선언한 변수의 의미가 별로 없음을 보여주는, param1 객체가 주인이라는 것을 보여주는 예시
+   const a = {a:"a", b:"b", c:"c"}
+   const b = {d:"d", e:"e", f:"f"}
+   const k = Object.assign(a,b) 
+   // a = {a:"a", b:"b", c:"c", d:"d", e:"e", f:"f"}
+   // k = {a:"a", b:"b", c:"c", d:"d", e:"e", f:"f"}
+   // a === k
+   
+   예3) 병합관계에 있는 객체간의 키 중복에 대한 예시
+   const a = {a:"a", b:"b", c:"c"}
+   const b = {a:"a1", b:"b1", c:"c1"}
+   Object.assign(a,b) // a = {a:"a1", b:"b1", c:"c1"}
+   // 물론 param2는 종속 객체이므로, 값만 같을뿐 a !== b
+   
+   예4) 객체 a,b를 통합하되 원본을 손상하지 않고자한다면,(깊은복사하려면)
+   const a = {a:"a", b:"b"}
+   const b = {d:"a1", e:"b1"}
+   const c = Object.assign({},a,b) // c = {a:"a", b:"b", d:"a1", e:"b1"}
+   
+   
    
    ```
-   예
-   ```
-
+   
 6. Object.hasOwnProperty
    
    -> 해당 객체가 보유한 전체 키&밸류 세트들을 배열로 반환한다. 
@@ -1329,33 +1390,9 @@ transition 속성과 animation 속성의 가장 큰 차이는 transition 속성�
     // view 배우는 과정에서 view의 reactivity를 보여준 예시 
 ```
 
-## 31. CSS[ Flex](https://studiomeal.com/archives/197)
 
-1. 속성 개요 
-   
-   - flex container 내부에, flex item들을 알맞게 짜넣기 위한 기능임 
-   - item이 Block요소 일지라도 inline요소화 된다.(즉 width 특정이 가능함)
-   - item의 height는 컨테이너 높이에 100%맞출 수 있다.(flex-direction : row, align-items: stretch 시)
 
-2. 적용요령
-   
-   1. 부모태그(flex container)
-      
-      - display: flex; 또는 inline-flex; 입력 (Block or inline 여부)
-      
-      - flex -direction 설정(<u>row</u> / column / row-reverse / column-reverse): item을 쌓는 방향/순서
-      
-      - flex-wrap 설정(<u>nowrap</u>/ wrap) : 줄바꿈 속성    </li>
-      
-      - justify-content 설정(flex-start / flex-end / center / space-between / space-around/ space-evenly): 좌우정렬조건
-      
-      - align-items 설정(<u>stretch</u> / flex-start / flex-end / center) : 수직정렬조건
-      2. 자식태그(flex item, 목표태그)에 
-         
-         - flex-grow(<u>0</u> / 기타 정수) : 0외의 수를 쓰면 자식태그 width가 stretch 됨, 각 자식태그 grow값에 비례하여 stretch 됨 
-         - align-self(<u>auto</u> / stretch / flex-start / flex-end / center): flex items의 개별 조작용
-
-## 32. position
+## 32. position(9/10)
 
 1. static(기본값)
    
@@ -1383,11 +1420,11 @@ transition 속성과 animation 속성의 가장 큰 차이는 transition 속성�
    1. 부모태그의 postion 상태와 무관하게 절대적 위치를 갖는다. 
    2. 스크롤을 무시한다.
 
-## 33. !important
+## 33. !important(9/10)
 
-## 34. BEM
+## 34. BEM(9/10)
 
-## 35.HTML 태그: i
+## 35.HTML 태그: i(9/10)
 
 "<i> 요소의 텍스트는 보통 이탤릭체로 표현되며, 전문용어나 다른 언어의 관용구, 문어체, 서양 문헌에 나오는 배 이름 등을 나타낼 때 사용됩니다."
 
@@ -1401,7 +1438,7 @@ transition 속성과 animation 속성의 가장 큰 차이는 transition 속성�
 2. 본래의 쓰임인 italic 스타일은 font-style에서 구현이 가능하기 때문에 i태그가 잘 쓰이지 않는 다는 점 
 3. 마치 icon의 줄임말 같아 상대적으로 어울린다는(?) 점
 
-## 36.Ajax
+## 36.Ajax(9/10)
 
 Ajax([에이젝스])
 
@@ -1456,7 +1493,7 @@ Ajax([에이젝스])
      }
   ```
 
-## 37. CORS
+## 37. CORS(9/10)
 
 1. 개요
    
@@ -1474,9 +1511,9 @@ Ajax([에이젝스])
    
    보안에 취약함.
 
-## 38. response 객체
+## 38. response 객체(9/10)
 
-## 39. status 코드
+## 39. status 코드(9/10)
 
 **http 상태코드** - "HTTP 응답 상태 코드는 특정 HTTP 요청이 성공적으로 완료되었는지 알려줍니다. 응답은 5개의 그룹으로 나누어집니다: 정보를 제공하는 응답, 성공적인 응답, 리다이렉트, 클라이언트 에러, 그리고 서버 에러."
 
@@ -1490,15 +1527,15 @@ Ajax([에이젝스])
 
 500번대  : 서버 에러
 
-## 40.Single Page Application
+## 40.Single Page Application(9/10)
 
-## 41.Pjax
+## 41.Pjax(9/10)
 
-## 42. ECMA
+## 42. ECMA(9/10)
 
-## 43. Babel
+## 43. Babel(9/10)
 
-## 44. Jquery DOM Insertion, Inside
+## 44. Jquery DOM Insertion, Inside(9/10)
 
 1. .append()
    
@@ -1595,7 +1632,7 @@ Ajax([에이젝스])
   1. get() 함수 이용
   2. [0] 붙이기 
 
-## 45. SVG
+## 45. SVG(9/10)
 
 SVG(Scalable Vector Graphics)
 
@@ -1687,7 +1724,7 @@ SVG는 벡터(Vector) 그래픽 포멧으로 이미지를 확대해도 선명도
 
 4. <text></text>태그 
 
-## 46. Jquery - Event Object
+## 46. Jquery - Event Object(9/10)
 
 event.currentTarget
 
@@ -1727,9 +1764,9 @@ event.type
 
 event.which
 
-## 47.dir
+## 47.dir(9/10)
 
-## 48. 정규 표현식(Reqular Expression)
+## 48. 정규 표현식(Reqular Expression)(9/10)
 
 참고 링크 https://www.nextree.co.kr/p4327/
 
@@ -1885,9 +1922,9 @@ event.which
    - match : 일치부분을 반환함, return type Array // string.match(regex)
    - replace : string.replace(a,b)_a를 b로 치환함
 
-## 49.box-sizing속성
+## 49.box-sizing속성(9/10)
 
-## 50.px vw 등 단위별 특징 비교
+## 50.px vw 등 단위별 특징 비교(9/10)
 
 단위는 크게 아래와 같이 나눌 수 있다. 
 
@@ -1901,15 +1938,15 @@ event.which
 |     |     |     |
 |     |     |     |
 
-## 51.firebase
+## 51.firebase(9/10)
 
 API Key : AIzaSyA-zauPvHD9Kihy8W_MYjWPLdm-4zG5Fc0
 
-## 52. 구글클라우드 플랫폼
+## 52. 구글클라우드 플랫폼(9/10)
 
 API Key : AIzaSyAJY6L9E7Z8XQk89VxMRkcem1Q0M7Z1CrM
 
-## 53. XMLHttpRequest
+## 53. XMLHttpRequest(9/10)
 
 통신을 위한 JS API 로서 AJAX의 기초가 되는 메서드이다. 
 
@@ -1943,7 +1980,7 @@ API Key : AIzaSyAJY6L9E7Z8XQk89VxMRkcem1Q0M7Z1CrM
   
   XMLHttpRequest.statusText : 상태코드에 대한 문자열 반환
 
-## 54. animate
+## 54. animate(9/10)
 
 - 애니메이션 효과 제공(Jquery에만 있음)
 
@@ -1974,7 +2011,7 @@ API Key : AIzaSyAJY6L9E7Z8XQk89VxMRkcem1Q0M7Z1CrM
 
 - 가능한 기능 : 클릭으로 메뉴 길어지게 하기(width), 이동시키기(margin-), 스크롤내림에 따라 이미지 들어오기
 
-## 55. CSS:transition
+## 55. CSS:transition(9/10)
 
 "속성을 천천히 변화시키는 속성"
 
@@ -1997,7 +2034,7 @@ API Key : AIzaSyAJY6L9E7Z8XQk89VxMRkcem1Q0M7Z1CrM
   }
   ```
 
-## 56.fileReader 객체
+## 56.fileReader 객체(9/10)
 
 '**FileReader** 객체는 웹 애플리케이션이 비동기적으로 데이터를 읽기 위하여 읽을 파일을 가리키는 File 혹은 Blob 객체를 이용해 파일의 내용을(혹은 raw data버퍼로) 읽고 사용자의 컴퓨터에 저장하는 것을 가능하게 해 줍니다.'
 
@@ -2050,7 +2087,7 @@ $("#my_file_input").on("change", function(e){
     
     ** (1)읽기 작업이 완료되고(onload) , (2)데이터의 포맷이 정해진 후(readAs~실행 후) 유효
 
-## 57. sort()
+## 57. sort()(9/10)
 
 sort는 배열의 인자들을 소팅하여 배열을 다시 return함.
 
@@ -3624,7 +3661,84 @@ RFC2822 또는 ISO 8601
 
 
 
+## 86. 자바스크립트의 역사
 
+1. 자바스크립트란
+
+    HTML,CSS와 더불어 웹을 구성하는 3요소의 하나로서 존재하며, 동적으로 컨텐츠를 조작할 수 있게 함.
+
+   특징 
+
+   1. 자바스크립트는 객체 기반의 스크립트 언어입니다.
+
+   2. 자바스크립트는 동적이며, 타입을 명시할 필요가 없는 인터프리터 언어입니다.
+
+      (인터프리터 언어란, 별도의 컴파일 없이 소스코드를 바로 실행할 수 있는 언어임, 상반개념은 컴파일이 필요한 컴파일언어가 있으며,자바가 그러하다.)
+
+      (타입을 명시하지 않는다는 것은, 타입검사를 엄격하게하는 java와의 비교를 통해 확인할 수 있음)
+
+   3. 자바스크립트는 객체 지향형 프로그래밍과 함수형 프로그래밍을 모두 표현할 수 있습니다.(=멀티 패러다임 언어이다.)
+
+    주요기능: 변수를 활용한 값 저장, 이벤트에 응답하는 이벤트리스너 통제, 제어/연산 등을 통한 로직 부여
+
+   현재 유일한 프론트엔드 프로그래밍 언어.
+
+   웹 브라우저가 자바스크립트를 해석하는 인터프리터를 갖고 있음. 
+
+   
+
+2. 단순역사
+
+   90년대 초반, 브라우저 업체 모자이크가 '넷스케이프'라는 브라우저를 만들던 상황 속에서, 
+
+   웹을 좀 더 동적으로 변화시키기 위해,  
+
+   또한, 이미지, 플러그인 등 여러 다른 요소들을 조합시키기 위한 Glue 언어의 필요성을 느꼈고,
+
+   자바를 구현할 언어가 필요한 상황이었다. 
+
+   
+
+   이후 ajax, jquery의 등장으로 발전,
+
+   또한node.js의 등장으로 서버사이드 언어로서의 확장을 하게됨
+
+   
+
+   프레임워크인 angularJs, React.js Vue.js등에도 쓰이고, 
+
+   파생되어 TypeScript, CoffeScript도 나왔다. 
+
+   
+
+   
+
+3. 논의할사항?의의?
+
+## 87. 웹 폰트 사용방법
+
+
+
+1. 웹 폰트 등록(font-face)
+
+   ```
+   @font-face {
+       font-family: 'SDSamliphopangche_Outline';
+       src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts-20-12@1.0/SDSamliphopangche_Outline.woff') format('woff');
+       font-weight: normal;
+       font-style: normal;
+   }
+   ```
+
+2. 적용(해당 폰트 패밀리 사용)
+
+   ```
+   body {
+   	font-family: 'SDSamliphopangche_Outline';
+   }
+   ```
+
+   
 
 
 
